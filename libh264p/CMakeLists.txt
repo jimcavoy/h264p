@@ -46,6 +46,6 @@ install(FILES ${LIB_INCLUDE_FILES} DESTINATION include)
 # generate and install export file
 install(EXPORT libh264pTargets
         FILE libh264pTargets.cmake
-        NAMESPACE lcss::
+        NAMESPACE ThetaStream::
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/lib/cmake/libh264p
 )
