@@ -1,18 +1,20 @@
 // h264p.cpp : Defines the entry point for the console application.
 //
 
+#ifdef _WIN32
 #include <conio.h>
+#endif
 #include <iostream>
 #include <fstream>
 #include "TestH264Parser.h"
 
-#ifdef _DEBUG
-#define new DEBUG_CLIENTBLOCK
-#endif
-
 using namespace std;
 
 const int N = 1024;
+
+#ifdef _WIN32
+#define fprintf fprintf_s
+#endif
 
 int main(int argc, char* argv[])
 {
@@ -45,7 +47,7 @@ int main(int argc, char* argv[])
 
 		end = clock();
 		double dif = (double)(end - start) / CLOCKS_PER_SEC;
-		fprintf_s(stderr,"Elapsed time is %2.3lf seconds.", dif);
+		fprintf(stderr,"Elapsed time is %2.3lf seconds.", dif);
 
 		ifile.close();
 	}

@@ -46,14 +46,26 @@ static int RBSPtoSODB(byte *streamBuffer, int last_byte_pos)
 /////////////////////////////////////////////////////////////////////////////
 // Bitstream
 Bitstream::Bitstream(ThetaStream::NALUnitImpl::iterator first, ThetaStream::NALUnitImpl::iterator last, size_t len)
-	:read_len(0)
+	: read_len(0)
 	, frame_bitoffset(0)
 	, ei_flag(0)
 {
 	using namespace std;
 	streamBuffer = new byte[len];
+#ifdef _WIN32
 	std::copy(first, last,
 		stdext::checked_array_iterator<byte*>(streamBuffer, len));
+#else
+	ThetaStream::NALUnitImpl::iterator it;
+	int i = 0;
+	for (it = first; it != last; ++it)
+	{
+		if (i < len)
+		{
+			streamBuffer[i++] = *it;
+		}
+	}
+#endif
 	code_len = bitstream_length = RBSPtoSODB(streamBuffer, (int)len);
 }
 

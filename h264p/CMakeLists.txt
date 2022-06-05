@@ -8,13 +8,27 @@ project(h264p)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+if (WIN32)
+set(LOKI_DIRECTORY ../../loki-lib/include)
+set(CAJUN_DIRECTORY ../../cajun-jsonapi/include/cajun)
+else()
+set(LOKI_DIRECTORY $ENV{HOME}/.vs/loki-lib/include)
+set(CAJUN_DIRECTORY $ENV{HOME}/.vs/cajun-jsonapi/include/cajun)
+endif()
+
 # Add source to this project's executable.
-add_executable (h264p "h264p.cpp" "MDPMParser.cpp" "SEIParser.cpp" "TestH264Parser.cpp")
+file(GLOB SRC_LIST "./*.cpp")
+file(GLOB LOKI_SRC_LIST ${LOKI_DIRECTORY}/loki/*.h)
+file(GLOB CAJUN_SRC_LIST ${CUJUN_DIRECTORY}/json/*.h)
+
+set(HEADER_FILES ${LOKI_SRC_LIST} ${CAJUN_SRC_LIST})
+
+add_executable(h264p ${SRC_LIST} ${HEADER_FILES})
+
+target_include_directories(h264p PRIVATE ${LOKI_DIRECTORY})
+target_include_directories(h264p PRIVATE ${CAJUN_DIRECTORY})
 
 list(APPEND EXTRA_LIBS libh264p)
-
-include_directories(../../loki-lib/include)
-include_directories(../../cajun-jsonapi/include/cajun)
 
 target_link_libraries(h264p PUBLIC ${EXTRA_LIBS})
 

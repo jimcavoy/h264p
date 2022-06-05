@@ -2,6 +2,8 @@
 
 #include "nalu.h"
 
+#include <memory.h>
+
 using namespace std;
 
 namespace

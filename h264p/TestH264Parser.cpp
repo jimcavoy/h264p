@@ -14,6 +14,10 @@
 using namespace ThetaStream;
 using namespace std;
 
+#ifdef _WIN32
+#define sprintf sprintf_s
+#endif
+
 namespace
 {
 	string sliceType(unsigned int type)
@@ -23,13 +27,13 @@ namespace
 		switch (type)
 		{
 		case 0: case 5:
-			sprintf_s(stype, "P Slice = %d", type);
+			sprintf(stype, "P Slice = %d", type);
 			break;
 		case 1: case 6:
-			sprintf_s(stype, "B Slice = %d", type);
+			sprintf(stype, "B Slice = %d", type);
 			break;
 		case 2: case 7:
-			sprintf_s(stype, "I Slice = %d", type);
+			sprintf(stype, "I Slice = %d", type);
 			break;
 		}
 

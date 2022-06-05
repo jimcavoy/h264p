@@ -21,7 +21,13 @@ else()
         OUTPUT_NAME h264p)
 endif()
 
+if (WIN32)
 include_directories(../../loki-lib/include)
+else()
+target_include_directories(libh264p 
+    PUBLIC
+    $ENV{HOME}/.vs/loki-lib/include)
+endif()
 
 target_include_directories(libh264p
           PUBLIC 

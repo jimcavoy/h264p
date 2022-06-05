@@ -1,10 +1,12 @@
 #pragma once
-#include "loki/visitor.h"
+#include "loki/Visitor.h"
 
 #include "seiimpl.h"
 #include "json/elements.h"
 
+#include <memory.h>
 #include <vector>
+
 
 /////////////////////////////////////////////////////////////////////////////
 // This class represents a Modified Digital Video Pack Metadata (MDPM) element

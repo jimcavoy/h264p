@@ -4,6 +4,11 @@
 #include <algorithm>
 #include <string>
 
+#ifdef _WIN32
+#define sprintf sprintf_s
+#endif
+
+
 using namespace std;
 using namespace ThetaStream;
 
@@ -57,7 +62,7 @@ namespace
 	void printout(json::Array& elmts, int tag, const char* name, const char* value)
 	{
 		char t[16];
-		sprintf_s(t, "%#02.2x", tag);
+		sprintf(t, "%#02.2x", tag);
 		json::Object exif;
 
 		exif["tag"] = json::String(t);
@@ -94,7 +99,7 @@ namespace
 
 		for (size_t i = 0; it != last; ++it, ++i)
 		{
-			sprintf_s(c, "%02x", (unsigned char)*it);
+			sprintf(c, "%02x", (unsigned char)*it);
 			ret += c;
 			if (i == 3 || i == 5 || i == 7 || i == 9)
 				ret += "-";
@@ -114,11 +119,11 @@ namespace
 			int ch = *it;
 			if (ch >= -1 && ch < 256 && isprint(ch))
 			{
-				sprintf_s(c, "%c", ch);
+				sprintf(c, "%c", ch);
 			}
 			else
 			{
-				sprintf_s(c, "%02x ", (unsigned char)ch);
+				sprintf(c, "%02x ", (unsigned char)ch);
 			}
 			ret += c;
 		}
@@ -256,100 +261,100 @@ void SEIParser::parseMDPMData(ThetaStream::SEIUserDataUnreg & sei)
 		{
 		case 0x18: {
 			string mon = month(v[3]);
-			sprintf_s(value, "%x%x %s", v[1], v[2], mon.c_str());
+			sprintf(value, "%x%x %s", v[1], v[2], mon.c_str());
 			printout(exifElmts, t, "DateTimeOriginal", value);
 		}break;
 		case 0x19: {
-			sprintf_s(value, "%x day, %x:%x:%x", v[0], v[1], v[2], v[3]);
+			sprintf(value, "%x day, %x:%x:%x", v[0], v[1], v[2], v[3]);
 			printout(exifElmts, t, "DateTimeOriginal", value);
 		}break;
 		case 0x70: {
-			sprintf_s(value, "%02x %02x %02x %02x", (unsigned char)v[0], (unsigned char)v[1], (unsigned char)v[2], (unsigned char)v[3]);
+			sprintf(value, "%02x %02x %02x %02x", (unsigned char)v[0], (unsigned char)v[1], (unsigned char)v[2], (unsigned char)v[3]);
 			printout(exifElmts, t, "Camera1", value);
 		}break;
 		case 0x71: {
-			sprintf_s(value, "%02x %02x %02x %02x", (unsigned char)v[0], (unsigned char)v[1], (unsigned char)v[2], (unsigned char)v[3]);
+			sprintf(value, "%02x %02x %02x %02x", (unsigned char)v[0], (unsigned char)v[1], (unsigned char)v[2], (unsigned char)v[3]);
 			printout(exifElmts, t, "Camera2", value);
 		}break;
 		case 0x7f: {
-			sprintf_s(value, "%02x %02x %02x %02x", (unsigned char)v[0], (unsigned char)v[1], (unsigned char)v[2], (unsigned char)v[3]);
+			sprintf(value, "%02x %02x %02x %02x", (unsigned char)v[0], (unsigned char)v[1], (unsigned char)v[2], (unsigned char)v[3]);
 			printout(exifElmts, t, "Shutter", value);
 		}break;
 		case 0xa1: {
 			const char* v = it->value();
 			float deg = rational2float(v);
-			sprintf_s(value, "%.2f", deg);
+			sprintf(value, "%.2f", deg);
 			printout(exifElmts, t, "FNumber", value);
 		}break;
 		case 0xb0: {
-			sprintf_s(value, "%x.%x.%x.%x", v[0], v[1], v[2], v[3]);
+			sprintf(value, "%x.%x.%x.%x", v[0], v[1], v[2], v[3]);
 			printout(exifElmts, t, "GPSVersionID", value);
 		}break;
 		case 0xb1: {
-			sprintf_s(value, "%c", v[0]);
+			sprintf(value, "%c", v[0]);
 			printout(exifElmts, t, "GPSLatitudeRef", value);
 		}break;
 		case 0xb2: {
 			const char* v = it->value();
 			float deg = rational2float(v);
-			sprintf_s(value, "%.0f degrees", deg);
+			sprintf(value, "%.0f degrees", deg);
 			printout(exifElmts, t, "GPSLatitude", value);
 		}break;
 		case 0xb3: {
 			float deg = rational2float(v);
-			sprintf_s(value, "%.0f minutes", deg);
+			sprintf(value, "%.0f minutes", deg);
 			printout(exifElmts, t, "GPSLatitude", value);
 		}break;
 		case 0xb4: {
 			const char* v = it->value();
 			float deg = rational2float(v);
-			sprintf_s(value, "%.3f seconds", deg);
+			sprintf(value, "%.3f seconds", deg);
 			printout(exifElmts, t, "GPSLatitude", value);
 		}break;
 		case 0xb5: {
-			sprintf_s(value, "%c", v[0]);
+			sprintf(value, "%c", v[0]);
 			printout(exifElmts, t, "GPSLongitudeRef", value);
 		}break;
 		case 0xb6: {
 			float deg = rational2float(v);
-			sprintf_s(value, "%.0f degrees", deg);
+			sprintf(value, "%.0f degrees", deg);
 			printout(exifElmts, t, "GPSLongitude", value);
 		}break;
 		case 0xb7: {
 			float deg = rational2float(v);
-			sprintf_s(value, "%.0f minutes", deg);
+			sprintf(value, "%.0f minutes", deg);
 			printout(exifElmts, t, "GPSLongitude", value);
 		}break;
 		case 0xb8: {
 			float deg = rational2float(v);
-			sprintf_s(value, "%.3f seconds", deg);
+			sprintf(value, "%.3f seconds", deg);
 			printout(exifElmts, t, "GPSLongitude", value);
 		}break;
 		case 0xb9: {
 			int flag;
 			memcpy(&flag, (void*)v, 4);
 			string strVal = flag ? "Below Sea Level" : "Above Sea Level";
-			sprintf_s(value, "%s", strVal.c_str());
+			sprintf(value, "%s", strVal.c_str());
 			printout(exifElmts, t, "GPSAltitudeRef", value);
 		}break;
 		case 0xba: {
 			float alt = rational2float(v);
-			sprintf_s(value, "%.3f meters", alt);
+			sprintf(value, "%.3f meters", alt);
 			printout(exifElmts, t, "GPSAltitude", value);
 		}break;
 		case 0xbb: {
 			float h = rational2float(v);
-			sprintf_s(value, "%.0f hours", h);
+			sprintf(value, "%.0f hours", h);
 			printout(exifElmts, t, "GPSTimeStamp", value);
 		}break;
 		case 0xbc: {
 			float m = rational2float(v);
-			sprintf_s(value, "%.0f minutes", m);
+			sprintf(value, "%.0f minutes", m);
 			printout(exifElmts, t, "GPSTimeStamp", value);
 		}break;
 		case 0xbd: {
 			float s = rational2float(v);
-			sprintf_s(value, "%.0f seconds", s);
+			sprintf(value, "%.0f seconds", s);
 			printout(exifElmts, t, "GPSTimeStamp", value);
 		}break;
 		case 0xbe: {
@@ -359,7 +364,7 @@ void SEIParser::parseMDPMData(ThetaStream::SEIUserDataUnreg & sei)
 			case 'A': s = "Measurement Active"; break;
 			case 'V': s = "Measurement Void"; break;
 			}
-			sprintf_s(value, "%s", s);
+			sprintf(value, "%s", s);
 			printout(exifElmts, t, "GPSStatus", value);
 		}break;
 		case 0xbf: {
@@ -370,12 +375,12 @@ void SEIParser::parseMDPMData(ThetaStream::SEIUserDataUnreg & sei)
 			case 2: s = "2-Dimensional Measurement"; break;
 			default: s = "Unknown";
 			}
-			sprintf_s(value, "%s", s);
+			sprintf(value, "%s", s);
 			printout(exifElmts, t, "GPSMeasureMode", value);
 		}break;
 		case 0xc0: {
 			float s = rational2float(v);
-			sprintf_s(value, "%.4f", s);
+			sprintf(value, "%.4f", s);
 			printout(exifElmts, t, "GPSDOP", value);
 		}break;
 		case 0xc1: {
@@ -387,12 +392,12 @@ void SEIParser::parseMDPMData(ThetaStream::SEIUserDataUnreg & sei)
 			case 'N': ref = "knots"; break;
 			}
 
-			sprintf_s(value, "%s", ref.c_str());
+			sprintf(value, "%s", ref.c_str());
 			printout(exifElmts, t, "GPSSpeedRef", value);
 		}break;
 		case 0xc2: {
 			float s = rational2float(v);
-			sprintf_s(value, "%.3f", s);
+			sprintf(value, "%.3f", s);
 			printout(exifElmts, t, "GPSSpeed", value);
 		}break;
 		case 0xc3: {
@@ -402,12 +407,12 @@ void SEIParser::parseMDPMData(ThetaStream::SEIUserDataUnreg & sei)
 			case 'M': ref = "Magnetic North"; break;
 			case 'T': ref = "True North"; break;
 			}
-			sprintf_s(value, "%s", ref.c_str());
+			sprintf(value, "%s", ref.c_str());
 			printout(exifElmts, t, "GPSTrackRef", value);
 		}break;
 		case 0xc4: {
 			float s = rational2float(v);
-			sprintf_s(value, "%.3f degrees", s);
+			sprintf(value, "%.3f degrees", s);
 			printout(exifElmts, t, "GPSTrack", value);
 		}break;
 		case 0xc5: {
@@ -417,17 +422,17 @@ void SEIParser::parseMDPMData(ThetaStream::SEIUserDataUnreg & sei)
 			case 'M': ref = "Magnetic North"; break;
 			case 'T': ref = "True North"; break;
 			}
-			sprintf_s(value, "%s", ref.c_str());
+			sprintf(value, "%s", ref.c_str());
 			printout(exifElmts, t, "GPSImgDirectionRef", value);
 		}break;
 		case 0xc6: {
 			float s = rational2float(v);
-			sprintf_s(value, "%.3f degrees", s);
+			sprintf(value, "%.3f degrees", s);
 			printout(exifElmts, t, "GPSImgDirection", value);
 		}break;
 		case 0xc7:
 		case 0xc8: {
-			sprintf_s(value, "%c%c%c%c", v[0], v[1], v[2], v[3]);
+			sprintf(value, "%c%c%c%c", v[0], v[1], v[2], v[3]);
 			printout(exifElmts, t, "GPSMapDatum", value);
 		}break;
 		case 0xe0: {
@@ -443,18 +448,18 @@ void SEIParser::parseMDPMData(ThetaStream::SEIUserDataUnreg & sei)
 			case 0x0108: make = "Sony"; break;
 			case 0x1011: make = "Canon"; break;
 			}
-			sprintf_s(value, "%s", make.c_str());
+			sprintf(value, "%s", make.c_str());
 			printout(exifElmts, t, "MakeModel", value);
 		}break;
 		case 0xe4:
 		case 0xe5:
 		case 0xe6: {
-			sprintf_s(value, "%c%c%c%c", v[0], v[1], v[2], v[3]);
+			sprintf(value, "%c%c%c%c", v[0], v[1], v[2], v[3]);
 			printout(exifElmts, t, "Model", value);
 		}break;
 		default: {
 			memset(value, 0, BUFSIZ);
-			sprintf_s(value, "%02x %02x %02x %02x", (unsigned char)v[0], (unsigned char)v[1], (unsigned char)v[2], (unsigned char)v[3]);
+			sprintf(value, "%02x %02x %02x %02x", (unsigned char)v[0], (unsigned char)v[1], (unsigned char)v[2], (unsigned char)v[3]);
 			printout(exifElmts, t, "Unknown", value);
 		}
 		} //switch

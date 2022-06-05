@@ -2,6 +2,7 @@
 #define UTIL_H
 
 #include <vector>
+#include <cstdint>
 
 namespace ThetaStream
 {
@@ -38,7 +39,7 @@ void removeEmulationPrevention3Bytes( BackIter bit, Iter first, Iter last)
 		*bit++ = *it;
 }
 
-unsigned __int64 ntohll(unsigned __int64 n);
+uint64_t ntohll(uint64_t n);
 
 } // namespace lcss
 

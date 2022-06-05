@@ -1,9 +1,9 @@
 #include "util.h"
 
 
-unsigned __int64 ThetaStream::ntohll(unsigned __int64 n)
+uint64_t ThetaStream::ntohll(uint64_t n)
 {
-	unsigned __int64 x = n;
+	uint64_t x = n;
 	x = (x>>56) | 
 		((x<<40) & 0x00FF000000000000) |
 		((x<<24) & 0x0000FF0000000000) |

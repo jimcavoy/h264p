@@ -1,7 +1,6 @@
 #ifndef H264PRSR_H
 #define H264PRSR_H
 
-
 #include <memory>
 
 namespace ThetaStream
