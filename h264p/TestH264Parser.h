@@ -14,7 +14,7 @@ public:
 	TestH264Parser(const char* filename);
 	virtual ~TestH264Parser(void);
 
-	virtual void onNALUnit( ThetaStream::NALUnit& nalu);
+	virtual void onNALUnit( ThetaStream::NALUnit& nalu) override;
 
 private:
 	unsigned int count_;

@@ -57,35 +57,6 @@ ThetaStream::H264Parser::~H264Parser()
 
 }
 
-ThetaStream::H264Parser::H264Parser(const H264Parser& other)
-	:_pimpl(std::make_unique<ThetaStream::H264Parser::Impl>(*other._pimpl))
-{
-}
-
-ThetaStream::H264Parser& ThetaStream::H264Parser::operator=(const H264Parser& rhs)
-{
-	if (this != &rhs)
-	{
-		_pimpl.reset(new ThetaStream::H264Parser::Impl(*rhs._pimpl));
-	}
-	return *this;
-}
-
-ThetaStream::H264Parser::H264Parser(H264Parser&& other) noexcept
-{
-	*this = std::move(other);
-}
-
-ThetaStream::H264Parser& ThetaStream::H264Parser::operator=(H264Parser&& rhs) noexcept
-{
-	if (this != &rhs)
-	{
-		_pimpl = std::move(rhs._pimpl);
-	}
-	return *this;
-}
-
-
 
 void ThetaStream::H264Parser::parse(const char* buf, unsigned int size)
 {
