@@ -15,12 +15,18 @@ public:
 	H264Parser();
 	virtual ~H264Parser();
 
+	H264Parser(const H264Parser& other);
+	H264Parser& operator=(const H264Parser& rhs);
+
+	H264Parser(H264Parser&& other) noexcept;
+	H264Parser& operator=(H264Parser&& rhs) noexcept;
+
 	virtual void parse(const char* buf, unsigned int size);
-	virtual void onNALUnit( NALUnit& nalu);
+	virtual void onNALUnit( ThetaStream::NALUnit& nalu);
 
 private:
-	std::unique_ptr<NALUnit> _nalu;
-	char _start_code_prefix[4];
+	class Impl;
+	std::unique_ptr<Impl> _pimpl;
 };
 
 }

@@ -24,10 +24,12 @@ public:
 public:
 	NALUnit(unsigned short startcodeprefix_len=4);
 	~NALUnit();
+
 	NALUnit& operator=(const NALUnit& rhs);
 	NALUnit(const NALUnit& orig);
 
-	void swap(NALUnit& src);
+	NALUnit& operator=(NALUnit&& rhs) noexcept;
+	NALUnit(NALUnit&& other) noexcept;
 
 	unsigned short startcodeprefix_len() const;
 	char nal_ref_idc() const;
@@ -36,16 +38,14 @@ public:
 	void push_back(char c);
 	void parse();
 
-	iterator begin() { return rbsp_.begin(); }
-	iterator end() { return rbsp_.end(); }
+	iterator begin();
+	iterator end();
 
 	void Accept(Loki::BaseVisitor& visitor); 
 
 private:
-	std::shared_ptr<NALUnitImpl> pimpl_;
-	RawByteStreamPayload rbsp_;
-	unsigned short startcodeprefix_len_;
-	char nal_ref_idc_;
+	class Impl;
+	std::unique_ptr<Impl> _pimpl;
 };
 
 }
