@@ -21,9 +21,7 @@ else()
         OUTPUT_NAME h264p)
 endif()
 
-if(CMAKE_VS_PLATFORM_NAME)
-include_directories(../../../3rdParty/loki/include)
-elseif(WIN32)
+if(WIN32)
 include_directories(../../loki-lib/include)
 else()
 target_include_directories(libh264p 
