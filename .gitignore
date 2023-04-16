@@ -48,3 +48,6 @@ CMakeCache.txt
 CTestTestfile.cmake
 h264p/cmake_install.cmake
 libh264p/cmake_install.cmake
+/h264p/h264p.dir/Release
+/Testing/Temporary
+/install_manifest.txt
