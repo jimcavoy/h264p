@@ -1,5 +1,8 @@
 cmake_minimum_required (VERSION 3.8)
-project(libh264p)
+project("libh264p"
+    VERSION 1.0 
+    DESCRIPTION "H.264 parser library"
+    LANGUAGES C CXX)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 14)
@@ -9,12 +12,15 @@ if (WIN32)
     set(CMAKE_INSTALL_LIBDIR $ENV{APPDATA})
 endif()
 
-aux_source_directory(. SRC_LIST)
+file(GLOB SRC_LIST
+    *.h
+    *.cpp)
 add_library(libh264p STATIC ${SRC_LIST})
 set_property(TARGET libh264p PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 if(WIN32)
     target_link_libraries(libh264p)
+    add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
 else()
     set_target_properties(libh264p 
         PROPERTIES
