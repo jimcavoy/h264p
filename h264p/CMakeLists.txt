@@ -9,11 +9,12 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 if (WIN32)
-set(LOKI_DIRECTORY ../../loki-lib/include)
-set(CAJUN_DIRECTORY ../../cajun-jsonapi/include/cajun)
+    set(LOKI_DIRECTORY ../../loki-lib/include)
+    set(CAJUN_DIRECTORY ../../cajun-jsonapi/include/cajun)
+    add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
 else()
-set(LOKI_DIRECTORY $ENV{HOME}/.vs/loki-lib/include)
-set(CAJUN_DIRECTORY $ENV{HOME}/.vs/cajun-jsonapi/include/cajun)
+    set(LOKI_DIRECTORY $ENV{HOME}/.vs/loki-lib/include)
+    set(CAJUN_DIRECTORY $ENV{HOME}/.vs/cajun-jsonapi/include/cajun)
 endif()
 
 # Add source to this project's executable.
