@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <iterator>
 
 namespace ThetaStream
 {
@@ -14,33 +15,27 @@ namespace ThetaStream
 template<class BackIter, class Iter>
 void removeEmulationPrevention3Bytes( BackIter bit, Iter first, Iter last)
 {
-	Iter it;
+	std::vector<char> v;
+	Iter iter;
 
-	it = first;
+	// temporary copy
+	std::copy(first, last, std::back_inserter(v));
+
+	std::vector<char>::iterator it;
+	it = v.begin();
 	char c0, c1, c2;
 	c0 = *it; c1 = *it++; c2 = *it++;
-	int flag = -1;
 
 	// remove 0x03 symbol
-	while (it != last)
+	while (it != v.end())
 	{
 		if (c0 == 0x00 && c1 == 0x00 && c2 == 0x03)
-		{
-			flag = 2;
-		}
-		if (flag < 0)
-		{
-			*bit++ = c0;
-		}
-		else if (flag == 2 || flag == 1)
-		{
-			*bit++ = c0;
-			flag--;
-		}
-		else
-			flag--;
+			it = v.erase(--it);
 		c0 = c1; c1 = c2; c2 = *it++;
 	}
+
+	// output new bitstream
+	std::copy(v.begin(), v.end(), bit);
 }
 
 uint64_t ntohll(uint64_t n);
