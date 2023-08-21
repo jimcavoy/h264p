@@ -52,3 +52,4 @@ libh264p/cmake_install.cmake
 /Testing/Temporary
 /install_manifest.txt
 *.user
+*.lastcodeanalysissucceeded

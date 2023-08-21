@@ -24,8 +24,8 @@ public:
 	~SEI();
 	SEI& operator=(const SEI& rhs);
 	SEI(const SEI& orig);
-	SEI(SEI&& src);
-	SEI& operator=(SEI&& rhs);
+	SEI(SEI&& src) noexcept;
+	SEI& operator=(SEI&& rhs) noexcept;
 
 	void swap( SEI& src);
 

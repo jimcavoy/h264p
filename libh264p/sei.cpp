@@ -32,12 +32,12 @@ SEI& SEI::operator =(const SEI& rhs)
 	return *this;
 }
 
-SEI::SEI(SEI&& src)
+SEI::SEI(SEI&& src) noexcept
 {
 	*this = std::move(src);
 }
 
-SEI& SEI::operator=(SEI&& rhs)
+SEI& SEI::operator=(SEI&& rhs) noexcept
 {
 	if (this != &rhs)
 	{
