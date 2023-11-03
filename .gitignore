@@ -53,3 +53,4 @@ libh264p/cmake_install.cmake
 /install_manifest.txt
 *.user
 *.lastcodeanalysissucceeded
+/h264p/h264p.dir

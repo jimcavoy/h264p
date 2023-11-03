@@ -286,7 +286,7 @@ TestH264Parser::TestH264Parser(const char* filename)
 TestH264Parser::~TestH264Parser(void)
 {
 	root_["H.264 NAL Units"] = nalus_;
-	json::Writer::Write(root_,cout);
+	json::Writer::Write(root_,cout, true);
 }
 
 void TestH264Parser::onNALUnit( ThetaStream::NALUnit& nalu)
