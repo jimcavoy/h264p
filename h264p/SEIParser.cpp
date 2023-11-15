@@ -8,7 +8,6 @@
 #define sprintf sprintf_s
 #endif
 
-
 using namespace std;
 using namespace ThetaStream;
 
@@ -146,14 +145,42 @@ SEIParser::~SEIParser(void)
 void SEIParser::Visit(ThetaStream::SEIPicTiming & sei)
 {
 	json::Object seiobj;
-	std::string payload;
 	SEIimpl::RawByteStreamPayload ud;
 	sei.payload(std::back_inserter(ud));
 
 	seiobj["type"] = json::String("Picture Timing");
 	seiobj["payloadSize"] = json::Number((unsigned int)sei.payloadSize());
-	payload = bytesToString(ud.begin(), ud.end());
-	seiobj["payload"] = json::String(payload.c_str());
+	json::Object payload;
+	payload["cpb_removal_delay"] = json::Number(sei.cpb_removal_delay);
+	payload["dpb_output_delay"] = json::Number(sei.dpb_output_delay);
+	payload["pic_struct"] = json::Number(sei.pic_struct);
+	payload["clock_timestamp_flag"] = json::Number(sei.clock_timestamp_flag);
+	payload["ct_type"] = json::Number(sei.ct_type);
+	payload["nuit_field_based_flag"] = json::Number(sei.nuit_field_based_flag);
+	payload["counting_type"] = json::Number(sei.counting_type);
+	payload["full_timestamp_flag"] = json::Number(sei.full_timestamp_flag);
+	payload["discontinuity_flag"] = json::Number(sei.discontinuity_flag);
+	payload["cnt_dropped_flag"] = json::Number(sei.cnt_dropped_flag);
+	payload["n_frames"] = json::Number(sei.n_frames);
+	if (sei.full_timestamp_flag)
+	{
+		payload["seconds_value"] = json::Number(sei.seconds_value);
+		payload["minutes_value"] = json::Number(sei.minutes_value);
+		payload["hours_value"] = json::Number(sei.hours_value);
+	}
+	else
+	{
+		if (sei.seconds_flag)
+			payload["seconds_value"] = json::Number(sei.seconds_value);
+		if (sei.minutes_flag)
+			payload["minutes_value"] = json::Number(sei.minutes_value);
+		if (sei.hours_flag)
+			payload["hours_value"] = json::Number(sei.hours_value);
+	}
+	payload["time_offset"] = json::Number(sei.time_offset);
+	seiobj["payload"] = payload;
+	seiobj["timestamp"] = json::Number(sei.timestamp());
+	seiobj["timestamp in seconds"] = json::Number(sei.timestampInSeconds());
 	seipayloads_.Insert(seiobj);
 }
 

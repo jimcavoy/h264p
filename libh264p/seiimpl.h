@@ -5,6 +5,7 @@
 
 #include "loki/Visitor.h"
 
+class Bitstream;
 
 namespace ThetaStream
 {
@@ -80,7 +81,54 @@ public:
 		}
 	}
 
+	double timestampInSeconds() const;
+
+	uint64_t timestamp() const;
+
 private:
+	void Interpret(Bitstream* bitstream);
+
+public:
+	// if (CpbDpbDelaysPresentFlag ) {
+	int cpb_removal_delay{ 0 };					// u(v)
+	int dpb_output_delay{ 0 };					// u(v)
+	// }
+	// if (pic_struct_present_flag) {
+	int pic_struct{ 0 };						// u(4)
+	// for (i=0; i < NumClockTS; i++) {
+	int clock_timestamp_flag{ 0 };				// u(1)
+	// if (clock_timestamp_flag[i]) {
+	int ct_type{ 0 };							// u(2)
+	int nuit_field_based_flag{ 0 };				// u(1)
+	int counting_type{ 0 };						// u(5)
+	int full_timestamp_flag{ 0 };				// u(1)
+	int discontinuity_flag{ 0 };				// u(1)
+	int cnt_dropped_flag{ 0 };					// u(1)
+	int n_frames{ 0 };							// u(8)
+	// if (full_timestamp_flag) {
+	int seconds_value{ 0 };						// u(6)
+	int minutes_value{ 0 };						// u(6)
+	int hours_value{ 0 };						// u(5)
+	// } else {
+	int seconds_flag{ 0 };						// u(1)
+	// if (seconds_flag) {
+	//		seconds_value
+	int minutes_flag{ 0 };						// u(1)
+	// if (minutes_flag ) {
+	//		minutes_value
+	int hours_flag{ 0 };						// u(1)
+	// if (hours_flag) {
+	//		hours_value
+	// }
+	// }
+	// }
+	// if(time_offset_length > 0)
+	int time_offset{ 0 };						// i(v)
+	// }
+	// }
+	// }
+	// }
+
 	RawByteStreamPayload rbsp_;
 };
 
