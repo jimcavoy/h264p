@@ -53,7 +53,7 @@ NALUnitSliceHeaderImpl::~NALUnitSliceHeaderImpl()
 
 void NALUnitSliceHeaderImpl::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last)
 {
-	std::vector<char> sodb;
+	std::vector<uint8_t> sodb;
 	removeEmulationPrevention3Bytes(std::back_inserter(sodb), first, last);
 
 	Bitstream bitstream(++(sodb.begin()), sodb.end(), sodb.size() - 1);

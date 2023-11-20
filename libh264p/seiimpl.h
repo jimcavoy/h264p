@@ -16,7 +16,7 @@ class SEIimpl
 	: public Loki::BaseVisitable<>
 {
 public:
-	typedef std::vector<char> RawByteStreamPayload;
+	typedef std::vector<uint8_t> RawByteStreamPayload;
 	typedef RawByteStreamPayload::iterator iterator;
 public:
 	SEIimpl();

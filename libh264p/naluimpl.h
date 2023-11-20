@@ -16,10 +16,10 @@ class NALUnitImpl
 	: public Loki::BaseVisitable<>
 {
 public:
-	typedef std::vector<char> RawByteStreamPayload;
+	typedef std::vector<uint8_t> RawByteStreamPayload;
 	typedef RawByteStreamPayload::iterator iterator;
 public:
-	NALUnitImpl(unsigned char nut);
+	NALUnitImpl(uint8_t nut);
 	virtual ~NALUnitImpl();
 
 	virtual void parse(NALUnitImpl::iterator first

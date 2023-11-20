@@ -18,7 +18,7 @@ class SEI
 	: public Loki::BaseVisitable<>
 {
 public:
-	typedef std::vector<char> RawByteStreamPayload;
+	typedef std::vector<uint8_t> RawByteStreamPayload;
 public:
 	SEI();
 	~SEI();
@@ -30,7 +30,7 @@ public:
 	void swap( SEI& src);
 
 	unsigned int size() const;
-	void push_back(char c);
+	void push_back(uint8_t c);
 	void parse();
 
 	void Accept(Loki::BaseVisitor& visitor); 
