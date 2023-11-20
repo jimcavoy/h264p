@@ -59,7 +59,7 @@ unsigned int SEI::size() const
 	return (unsigned int)rbsp_.size();
 }
 
-void SEI::push_back(char c)
+void SEI::push_back(uint8_t c)
 {
 	rbsp_.push_back(c);
 }

@@ -9,8 +9,6 @@
 namespace ThetaStream
 {
 
-class NALUnitImpl;
-
 /////////////////////////////////////////////////////////////////////////////
 // NALUint
 
@@ -18,7 +16,7 @@ class NALUnit
 	: public Loki::BaseVisitable<>
 {
 public:
-	typedef std::vector<char> RawByteStreamPayload;
+	typedef std::vector<uint8_t> RawByteStreamPayload;
 	typedef RawByteStreamPayload::iterator iterator;
 	typedef RawByteStreamPayload::const_iterator const_iterator;
 public:
@@ -32,14 +30,16 @@ public:
 	NALUnit(NALUnit&& other) noexcept;
 
 	unsigned short startcodeprefix_len() const;
-	char nal_ref_idc() const;
+	uint8_t nal_ref_idc() const;
 
 	unsigned int size() const;
-	void push_back(char c);
+	void push_back(uint8_t c);
 	void parse();
 
 	iterator begin();
 	iterator end();
+
+	const uint8_t* data() const;
 
 	void Accept(Loki::BaseVisitor& visitor); 
 

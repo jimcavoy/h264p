@@ -13,7 +13,7 @@ using namespace ThetaStream;
 
 
 
-NALUnitImpl::NALUnitImpl(unsigned char nut)
+NALUnitImpl::NALUnitImpl(uint8_t nut)
 	:nal_unit_type(nut)
 {
 

@@ -37,7 +37,7 @@ public:
 	{
 		if (!_rbsp.empty())
 		{
-			unsigned char t = _rbsp[0] & 0x1F;
+			uint8_t t = _rbsp[0] & 0x1F;
 			_nal_ref_idc = _rbsp[0] & 0x60;
 
 			switch (t)
@@ -90,7 +90,7 @@ public:
 	std::shared_ptr<NALUnitImpl> _pimpl;
 	NALUnit::RawByteStreamPayload _rbsp;
 	unsigned short _startcodeprefix_len;
-	char _nal_ref_idc{};
+	uint8_t _nal_ref_idc{};
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -140,7 +140,7 @@ unsigned int NALUnit::size() const
 	return (unsigned int)_pimpl->_rbsp.size();
 }
 
-void NALUnit::push_back(char c)
+void NALUnit::push_back(uint8_t c)
 {
 	_pimpl->_rbsp.push_back(c);
 }
@@ -160,12 +160,17 @@ NALUnit::iterator ThetaStream::NALUnit::end()
 	return _pimpl->_rbsp.end();
 }
 
+const uint8_t* ThetaStream::NALUnit::data() const
+{
+	return _pimpl->_rbsp.data();
+}
+
 unsigned short NALUnit::startcodeprefix_len() const
 {
 	return _pimpl->_startcodeprefix_len;
 }
 
-char NALUnit::nal_ref_idc() const
+uint8_t NALUnit::nal_ref_idc() const
 {
 	return _pimpl->_nal_ref_idc;
 }
