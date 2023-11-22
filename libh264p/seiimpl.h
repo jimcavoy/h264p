@@ -2,6 +2,8 @@
 #define SEIIMPL_H
 
 #include <vector>
+#include <cstdint>
+#include <cstddef>
 
 #include "loki/Visitor.h"
 
