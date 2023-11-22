@@ -12,6 +12,14 @@ if (WIN32)
     set(CMAKE_INSTALL_LIBDIR $ENV{APPDATA})
 endif()
 
+include_directories(../../loki-lib/include)
+
+if(WIN32)
+target_include_directories(libh264p 
+    PUBLIC
+    $ENV{HOME}/.vs/loki-lib/include)
+endif()
+
 file(GLOB SRC_LIST
     *.h
     *.cpp)
@@ -25,14 +33,6 @@ else()
     set_target_properties(libh264p 
         PROPERTIES
         OUTPUT_NAME h264p)
-endif()
-
-if(WIN32)
-include_directories(../../loki-lib/include)
-else()
-target_include_directories(libh264p 
-    PUBLIC
-    $ENV{HOME}/.vs/loki-lib/include)
 endif()
 
 target_include_directories(libh264p

@@ -54,3 +54,4 @@ libh264p/cmake_install.cmake
 *.user
 *.lastcodeanalysissucceeded
 /h264p/h264p.dir
+/build

@@ -52,7 +52,7 @@ namespace
 	bool isMISPmicrosectime(Iterator first, Iterator last)
 	{
 		std::vector<char> UUID(16);
-		char *temp = "MISPmicrosectime";
+		char temp[17] = "MISPmicrosectime";
 		UUID.assign(&temp[0], &temp[0] + 16);
 
 		return std::equal(first, last, UUID.begin());
@@ -61,7 +61,7 @@ namespace
 	void printout(json::Array& elmts, int tag, const char* name, const char* value)
 	{
 		char t[16];
-		sprintf(t, "%#02.2x", tag);
+		sprintf(t, "%#2.2x", tag);
 		json::Object exif;
 
 		exif["tag"] = json::String(t);
@@ -385,22 +385,22 @@ void SEIParser::parseMDPMData(ThetaStream::SEIUserDataUnreg & sei)
 			printout(exifElmts, t, "GPSTimeStamp", value);
 		}break;
 		case 0xbe: {
-			char* s = "";
+			char s[255]{};
 			switch (v[0])
 			{
-			case 'A': s = "Measurement Active"; break;
-			case 'V': s = "Measurement Void"; break;
+			case 'A': strcpy(s, "Measurement Active"); break;
+			case 'V': strcpy(s, "Measurement Void"); break;
 			}
 			sprintf(value, "%s", s);
 			printout(exifElmts, t, "GPSStatus", value);
 		}break;
 		case 0xbf: {
-			char* s = "";
+			char s[255]{};
 			switch (v[0])
 			{
-			case 3: s = "3-Dimensional Measurement"; break;
-			case 2: s = "2-Dimensional Measurement"; break;
-			default: s = "Unknown";
+			case 3: strcpy(s, "3-Dimensional Measurement"); break;
+			case 2: strcpy(s, "2-Dimensional Measurement"); break;
+			default: strcpy(s, "Unknown");
 			}
 			sprintf(value, "%s", s);
 			printout(exifElmts, t, "GPSMeasureMode", value);
