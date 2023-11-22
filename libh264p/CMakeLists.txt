@@ -14,12 +14,6 @@ endif()
 
 include_directories(../../loki-lib/include)
 
-if(WIN32)
-target_include_directories(libh264p 
-    PUBLIC
-    $ENV{HOME}/.vs/loki-lib/include)
-endif()
-
 file(GLOB SRC_LIST
     *.h
     *.cpp)
