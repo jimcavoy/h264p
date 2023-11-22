@@ -10,12 +10,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(LOKI_DIRECTORY ../../loki-lib/include)
 set(CAJUN_DIRECTORY ../../cajun-jsonapi/include/cajun)
-    
-if (WIN32)
-    set(LOKI_DIRECTORY $ENV{HOME}/.vs/loki-lib/include)
-    set(CAJUN_DIRECTORY $ENV{HOME}/.vs/cajun-jsonapi/include/cajun)
-    add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
-endif()
 
 # Add source to this project's executable.
 file(GLOB SRC_LIST
