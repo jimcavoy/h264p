@@ -15,7 +15,7 @@ public:
 	H264Parser();
 	virtual ~H264Parser();
 
-	virtual void parse(const char* buf, unsigned int size);
+	virtual void parse(const uint8_t* buf, size_t size);
 	virtual void onNALUnit( ThetaStream::NALUnit& nalu);
 
 private:

@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	char memblock[N]{};
+	uint8_t memblock[N]{};
 	try
 	{
 		clock_t start, end;
