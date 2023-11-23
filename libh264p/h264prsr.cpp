@@ -8,7 +8,7 @@ using namespace std;
 
 namespace
 {
-	int hasStartCode(const char* buf)
+	int hasStartCode(const uint8_t* buf)
 	{
 		if(buf[0] == 0x00
 			&& buf[1] == 0x00
@@ -58,7 +58,7 @@ ThetaStream::H264Parser::~H264Parser()
 }
 
 
-void ThetaStream::H264Parser::parse(const char* buf, unsigned int size)
+void ThetaStream::H264Parser::parse(const uint8_t* buf, size_t size)
 {
 	unsigned short startcodeprefix_len = 0;
 
