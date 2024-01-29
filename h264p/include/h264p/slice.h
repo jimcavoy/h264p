@@ -1,8 +1,8 @@
 #ifndef SLICE_H
 #define SLICE_H
 
-#include "naluimpl.h"
-#include "loki/Visitor.h"
+#include <h264p/naluimpl.h>
+#include <loki/Visitor.h>
 
 class Bitstream;
 

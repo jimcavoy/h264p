@@ -1,8 +1,8 @@
 #ifndef PPS_H
 #define PPS_H
 
-#include "naluimpl.h"
-#include "loki/Visitor.h"
+#include <h264p/naluimpl.h>
+#include <loki/Visitor.h>
 #include <vector>
 
 class Bitstream;

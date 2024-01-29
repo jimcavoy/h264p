@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <cstddef>
 
-#include "loki/Visitor.h"
+#include <loki/Visitor.h>
 
 class Bitstream;
 

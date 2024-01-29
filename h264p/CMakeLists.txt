@@ -1,39 +1,33 @@
-﻿# CMakeList.txt : CMake project for h264p, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
-project(h264p)
+cmake_minimum_required (VERSION 3.21)
+project(h264p
+    VERSION 0.2.0 
+    DESCRIPTION "H.264 parser library"
+    LANGUAGES C CXX)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(LOKI_DIRECTORY ../../loki-lib/include)
-set(CAJUN_DIRECTORY ../../cajun-jsonapi/include/cajun)
+include_directories(../../loki-lib/include)
 
-# Add source to this project's executable.
-file(GLOB SRC_LIST
-    *.h
-    *.cpp)
-file(GLOB LOKI_SRC_LIST ${LOKI_DIRECTORY}/loki/*.h)
-file(GLOB CAJUN_SRC_LIST ${CUJUN_DIRECTORY}/json/*.h)
+add_library(h264p STATIC)
 
-set(HEADER_FILES ${LOKI_SRC_LIST} ${CAJUN_SRC_LIST})
+file(GLOB SRC_LIST src/*.cpp)
 
-add_executable(h264p ${SRC_LIST} ${HEADER_FILES})
+target_sources(h264p PRIVATE ${SRC_LIST})
 
-target_include_directories(h264p PRIVATE ${LOKI_DIRECTORY})
-target_include_directories(h264p PRIVATE ${CAJUN_DIRECTORY})
+set_property(TARGET h264p PROPERTY POSITION_INDEPENDENT_CODE ON)
 
-list(APPEND EXTRA_LIBS libh264p)
+target_include_directories(h264p
+          PRIVATE src/h264p
+		  PUBLIC include
+          )
 
-target_link_libraries(h264p PUBLIC ${EXTRA_LIBS})
+include(GNUInstallDirs)
 
-# TODO: Add tests and install targets if needed.
-install(TARGETS h264p 
-    EXPORT h264pTargets
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include
+install(TARGETS h264p)
+
+install (
+	DIRECTORY include/
+	DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )

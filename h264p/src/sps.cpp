@@ -1,4 +1,4 @@
-#include "sps.h"
+#include <h264p/sps.h>
 
 #include "bitstream.h"
 #include "vlc.h"

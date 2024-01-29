@@ -1,6 +1,5 @@
-#include "h264prsr.h"
-
-#include "nalu.h"
+#include <h264p/h264prsr.h>
+#include <h264p/nalu.h>
 
 #include <memory.h>
 

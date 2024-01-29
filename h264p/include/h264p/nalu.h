@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 
-#include "loki/Visitor.h"
+#include <loki/Visitor.h>
 
 namespace ThetaStream
 {
