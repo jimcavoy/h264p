@@ -1,6 +1,7 @@
 #include <h264p/h264prsr.h>
 #include <h264p/nalu.h>
 
+#include <cstring>
 
 using namespace std;
 

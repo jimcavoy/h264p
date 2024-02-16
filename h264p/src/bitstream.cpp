@@ -2,8 +2,6 @@
 
 #include <iterator>
 
-typedef unsigned char byte;
-
 /*!
  ************************************************************************
  * \brief
@@ -18,7 +16,7 @@ typedef unsigned char byte;
  *
 ************************************************************************/
 
-static int RBSPtoSODB(byte *streamBuffer, int last_byte_pos)
+static int RBSPtoSODB(u_char *streamBuffer, int last_byte_pos)
 {
 	int ctr_bit, bitoffset;
 
@@ -50,7 +48,7 @@ Bitstream::Bitstream(ThetaStream::NALUnitImpl::iterator first, ThetaStream::NALU
 	, ei_flag(0)
 {
 	using namespace std;
-	streamBuffer = new byte[len];
+	streamBuffer = new u_char[len];
 #ifdef _WIN32
 	std::copy(first, last,
 		stdext::checked_array_iterator<byte*>(streamBuffer, len));
