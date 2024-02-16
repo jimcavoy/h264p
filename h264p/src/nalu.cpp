@@ -3,7 +3,6 @@
 #include <h264p/sps.h>
 #include <h264p/pps.h>
 #include <h264p/slice.h>
-#include "util.h"
 
 #include <iterator>
 #include <iostream>

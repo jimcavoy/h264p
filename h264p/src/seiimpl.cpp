@@ -3,7 +3,6 @@
 
 #include "bitstream.h"
 #include "vlc.h"
-#include "util.h"
 
 extern std::shared_ptr<ThetaStream::NALUnitSPS> g_sps;
 

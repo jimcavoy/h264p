@@ -1,7 +1,6 @@
 #include "SEIParser.h"
 
 #include <iterator>
-#include <algorithm>
 #include <string>
 
 #ifdef _WIN32

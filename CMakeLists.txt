@@ -3,8 +3,8 @@
 #
 cmake_minimum_required (VERSION 3.21)
 project (h264p
-	VERSION 0.2.0
-	DESCRIPTION "H.264 Parser library"
+	VERSION 1.0.0
+	DESCRIPTION "H.264 Parser library and test application"
 	LANGUAGES CXX)
 
 # Include sub-projects.

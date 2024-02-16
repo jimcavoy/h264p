@@ -1,6 +1,5 @@
 #include "util.h"
 
-
 uint64_t ThetaStream::ntohll(uint64_t n)
 {
 	uint64_t x = n;

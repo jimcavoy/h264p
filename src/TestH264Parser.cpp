@@ -2,7 +2,6 @@
 
 #include <h264p/nalu.h>
 #include <h264p/naluimpl.h>
-#include <h264p/seiimpl.h>
 #include "SEIParser.h"
 
 #include <loki/Visitor.h>
