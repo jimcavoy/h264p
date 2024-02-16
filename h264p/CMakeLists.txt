@@ -68,6 +68,6 @@ write_basic_package_version_file(
 # Install command for deploying Config-file package files into the target system. It must be present
 # in the same directory as `h264p-config.cmake` file.
 install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/h262p-config-version.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/h264p-config-version.cmake"
   DESTINATION "${h264p_INSTALL_CMAKEDIR}"
 )
