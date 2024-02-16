@@ -1,7 +1,6 @@
 #include "MDPMParser.h"
 
 #include <iterator>
-#include <memory.h>
 #include <string>
 
 

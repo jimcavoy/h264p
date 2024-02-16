@@ -1,7 +1,7 @@
 #pragma once
-#include "h264prsr.h"
+#include <h264p/h264prsr.h>
 
-#include "json/elements.h"
+#include <json/elements.h>
 
 /// <summary>
 /// 

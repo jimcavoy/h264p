@@ -1,9 +1,8 @@
-#include "seiimpl.h"
+#include <h264p/seiimpl.h>
+#include <h264p/sps.h>
 
 #include "bitstream.h"
 #include "vlc.h"
-#include "util.h"
-#include "sps.h"
 
 extern std::shared_ptr<ThetaStream::NALUnitSPS> g_sps;
 

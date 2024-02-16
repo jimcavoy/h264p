@@ -1,13 +1,11 @@
 #include "TestH264Parser.h"
 
-#include "nalu.h"
-#include "naluimpl.h"
-#include "seiimpl.h"
+#include <h264p/nalu.h>
+#include <h264p/naluimpl.h>
 #include "SEIParser.h"
 
-#include "loki/Visitor.h"
-
-#include "json/writer.h"
+#include <loki/Visitor.h>
+#include <json/writer.h>
 
 #include <string>
 

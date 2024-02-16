@@ -1,6 +1,5 @@
 #include "bitstream.h"
 
-#include <iostream>
 #include <iterator>
 
 typedef unsigned char byte;

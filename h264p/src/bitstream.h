@@ -1,7 +1,7 @@
 #ifndef BITSTREAM_H
 #define BITSTREAM_H
 
-#include "naluimpl.h"
+#include <h264p/naluimpl.h>
 
 //! Bitstream
 class Bitstream

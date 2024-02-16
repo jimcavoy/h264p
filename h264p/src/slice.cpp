@@ -1,10 +1,10 @@
-#include "slice.h"
+#include <h264p/slice.h>
+#include <h264p/sps.h>
+#include <h264p/pps.h>
 
 #include "bitstream.h"
 #include "vlc.h"
 #include "util.h"
-#include "sps.h"
-#include "pps.h"
 
 #include <iterator>
 

@@ -1,10 +1,8 @@
-#include "nalu.h"
-
-#include "naluimpl.h"
-#include "sps.h"
-#include "pps.h"
-#include "slice.h"
-#include "util.h"
+#include <h264p/nalu.h>
+#include <h264p/naluimpl.h>
+#include <h264p/sps.h>
+#include <h264p/pps.h>
+#include <h264p/slice.h>
 
 #include <iterator>
 #include <iostream>

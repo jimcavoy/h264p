@@ -1,8 +1,8 @@
 #pragma once
-#include "loki/Visitor.h"
+#include <loki/Visitor.h>
 
-#include "seiimpl.h"
-#include "json/elements.h"
+#include <h264p/seiimpl.h>
+#include <json/elements.h>
 
 #include <memory.h>
 #include <vector>

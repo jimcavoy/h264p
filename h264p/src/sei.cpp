@@ -1,6 +1,5 @@
-#include "sei.h"
-
-#include "seiimpl.h"
+#include <h264p/sei.h>
+#include <h264p/seiimpl.h>
 
 #include <iterator>
 

@@ -1,9 +1,8 @@
 #ifndef SPS_H
 #define SPS_H
 
-#include "naluimpl.h"
-
-#include "loki/Visitor.h"
+#include <h264p/naluimpl.h>
+#include <loki/Visitor.h>
 
 #define MAXnum_ref_frames_in_pic_order_cnt_cycle  256
 #define MAXIMUMVALUEOFcpb_cnt   32
