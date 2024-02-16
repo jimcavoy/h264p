@@ -47,7 +47,7 @@ install (
 
 install (EXPORT h264p_export
         FILE h264p-config.cmake
-        NAMESPACE lcss::
+        NAMESPACE thetastream::
         DESTINATION ${h264p_INSTALL_CMAKEDIR}
 )
 
@@ -60,7 +60,7 @@ include(CMakePackageConfigHelpers)
 # We're not explicitly specifying the VERSION parameter to allow `write_basic_package_version_file` to 
 # get it from project(...) version (which is 1.0.0)
 write_basic_package_version_file(
-  "mp2tp-config-version.cmake"
+  "h264p-config-version.cmake"
   # Package compatibility strategy. SameMajorVersion is essentially `semantic versioning`.
   COMPATIBILITY SameMajorVersion
 )
@@ -68,6 +68,6 @@ write_basic_package_version_file(
 # Install command for deploying Config-file package files into the target system. It must be present
 # in the same directory as `h264p-config.cmake` file.
 install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/mp2tp-config-version.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/h264p-config-version.cmake"
   DESTINATION "${h264p_INSTALL_CMAKEDIR}"
 )
