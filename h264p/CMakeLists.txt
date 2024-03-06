@@ -14,7 +14,24 @@ set(h264p_INSTALL_CMAKEDIR cmake CACHE PATH "Installation directory for config-f
 # library in debug mode
 set(CMAKE_DEBUG_POSTFIX d )
 
-include_directories(../../loki-lib/include)
+# include the module `ExternalProject`
+include(ExternalProject)
+
+# Add an external project from a downloaded source archive
+ExternalProject_Add(
+  loki-lib
+  URL https://github.com/snaewe/loki-lib/archive/refs/tags/Release_0_1_5.tar.gz
+  URL_HASH MD5=74e60c683f745dc15c6e772927349483
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND ""
+  INSTALL_COMMAND ""
+)
+
+ExternalProject_Get_Property(loki-lib SOURCE_DIR)
+
+set(LOKI_DIR "${SOURCE_DIR}")
+
+include_directories(${LOKI_DIR}/include)
 
 add_library(h264p STATIC)
 
