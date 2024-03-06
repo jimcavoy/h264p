@@ -10,8 +10,28 @@ project (h264p
 # Include sub-projects.
 add_subdirectory (h264p)
 
-include_directories(../loki-lib/include)
-include_directories(../cajun-jsonapi/include/cajun)
+#include_directories(../loki-lib/include)
+#include_directories(../cajun-jsonapi/include/cajun)
+
+# include the module `ExternalProject`
+include(ExternalProject)
+
+# Add an external project from a downloaded source archive
+ExternalProject_Add(
+  cajun
+  URL https://github.com/cajun-jsonapi/cajun-jsonapi/archive/refs/tags/2.1.1.tar.gz
+  URL_HASH MD5=d84903f5243e4598df3929d421db399a
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND ""
+  INSTALL_COMMAND ""
+)
+
+ExternalProject_Get_Property(cajun SOURCE_DIR)
+
+set(CAJUN_DIR "${SOURCE_DIR}")
+
+include_directories(${CAJUN_DIR}/include/cajun)
+include_directories(${CMAKE_BINARY_DIR}/h264p/loki-lib-prefix/src/loki-lib/include/)
 
 add_executable(h264ptest)
 
@@ -20,6 +40,12 @@ file(GLOB SRC_LIST src/*.cpp)
 target_sources(h264ptest PRIVATE ${SRC_LIST})
 
 target_link_libraries(h264ptest PRIVATE h264p)
+
+# specify the C++ standard
+target_compile_features(
+    h264p
+    PUBLIC cxx_std_14
+)
 
 # Test cases
 enable_testing()

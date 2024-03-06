@@ -1,6 +1,7 @@
 #pragma once
 #include <loki/Visitor.h>
 #include <h264p/seiimpl.h>
+#include <functional>
 #include <json/elements.h>
 
 #include <memory.h>
