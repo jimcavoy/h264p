@@ -1,6 +1,6 @@
 #pragma once
 #include <h264p/h264prsr.h>
-
+#include <functional>
 #include <json/elements.h>
 
 /// <summary>
