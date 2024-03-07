@@ -10,9 +10,6 @@ project (h264p
 # Include sub-projects.
 add_subdirectory (h264p)
 
-#include_directories(../loki-lib/include)
-#include_directories(../cajun-jsonapi/include/cajun)
-
 # include the module `ExternalProject`
 include(ExternalProject)
 

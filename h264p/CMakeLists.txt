@@ -41,19 +41,20 @@ target_sources(h264p PRIVATE ${SRC_LIST})
 
 set_property(TARGET h264p PROPERTY POSITION_INDEPENDENT_CODE ON)
 
+add_dependencies(h264p loki-lib)
+
 # specify the C++ standard
-target_compile_features(
-    h264p
+target_compile_features(h264p
     PUBLIC cxx_std_14
 )
 
 target_include_directories(h264p
           PRIVATE src/h264p
-		  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-          )
+          PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
 
 install(TARGETS h264p
-		EXPORT h264p_export
+	EXPORT h264p_export
         INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
