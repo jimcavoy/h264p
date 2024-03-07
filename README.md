@@ -2,8 +2,6 @@
 H.264/AVC Parser library and test application.
 
 ## To Build and Install
-To build the library and test application do the the following:
-
 In h264p root directory, build and install this project using CMake:
 
 1. cmake -S . -B ./build
