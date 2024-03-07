@@ -4,17 +4,13 @@ H.264/AVC Parser library and test application.
 ## To Build and Install
 To build the library and test application do the the following:
 
-1.  Clone `Loki` library, https://github.com/snaewe/loki-lib in the same directory as this project was cloned.
+In h264p root directory, build and install this project using CMake:
 
-2.  Clone `CAJUN` JSON library, https://github.com/cajun-jsonapi/cajun-jsonapi in the same directory as this project was cloned.
-
-3.  In h264p root directory, build and install this project using CMake:
-
-	a. cmake -S . -B ./build
+1. cmake -S . -B ./build
 	
-	b. cmake --build ./build
+2. cmake --build ./build
 	
-	c. cmake --install ./build
+3. cmake --install ./build
 	
 Add additional CMake parameters as required depending on your host development envirnoment.
 
