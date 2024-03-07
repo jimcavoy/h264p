@@ -36,6 +36,8 @@ file(GLOB SRC_LIST src/*.cpp)
 
 target_sources(h264ptest PRIVATE ${SRC_LIST})
 
+add_dependencies(h264ptest cajun)
+
 target_link_libraries(h264ptest PRIVATE h264p)
 
 # specify the C++ standard
