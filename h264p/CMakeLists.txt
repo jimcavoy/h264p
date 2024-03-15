@@ -3,7 +3,7 @@ project(h264p
     VERSION 1.0.0
     DESCRIPTION "H.264 parser library"
     LANGUAGES C CXX)
-	
+
 include(GNUInstallDirs)
 
 # This is the default install directory for config-file package cmake files
@@ -70,9 +70,9 @@ target_compile_features(h264p
 )
 
 target_include_directories(h264p
-     PRIVATE src/h264p
-     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-	 INTERFACE $<BUILD_INTERFACE:${LOKI_DIR}/include>
+    PRIVATE src/h264p
+    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    INTERFACE $<BUILD_INTERFACE:${LOKI_DIR}/include>
 )
 
 install(TARGETS h264p

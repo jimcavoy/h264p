@@ -4,7 +4,7 @@
 cmake_minimum_required (VERSION 3.21)
 project (h264p
 	VERSION 1.0.0
-	DESCRIPTION "H.264 Parser library and test application"
+	DESCRIPTION "H.264 Parser library and test application, avc2json"
 	LANGUAGES CXX)
 
 # Include sub-projects.
