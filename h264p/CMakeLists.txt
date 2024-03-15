@@ -35,9 +35,30 @@ include_directories(${LOKI_DIR}/include)
 
 add_library(h264p STATIC)
 
-file(GLOB SRC_LIST src/*.cpp)
-
-target_sources(h264p PRIVATE ${SRC_LIST})
+target_sources(h264p PRIVATE
+    include/h264p/h264prsr.h
+    include/h264p/nalu.h
+    include/h264p/naluimpl.h
+    include/h264p/pps.h
+    include/h264p/sei.h
+    include/h264p/seiimpl.h
+    include/h264p/slice.h
+    include/h264p/sps.h
+    src/bitstream.cpp
+    src/bitstream.h
+    src/h264prsr.cpp
+    src/nalu.cpp
+    src/naluimpl.cpp
+    src/pps.cpp
+    src/sei.cpp
+    src/seiimpl.cpp
+    src/slice.cpp
+    src/sps.cpp
+    src/util.cpp
+    src/util.h
+    src/vlc.cpp
+    src/vlc.h
+)
 
 set_property(TARGET h264p PROPERTY POSITION_INDEPENDENT_CODE ON)
 
@@ -49,24 +70,25 @@ target_compile_features(h264p
 )
 
 target_include_directories(h264p
-          PRIVATE src/h264p
-          PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+     PRIVATE src/h264p
+     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	 INTERFACE $<BUILD_INTERFACE:${LOKI_DIR}/include>
 )
 
 install(TARGETS h264p
-	EXPORT h264p_export
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    EXPORT h264p_export
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 install (
-	DIRECTORY ${PROJECT_SOURCE_DIR}/include/
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    DIRECTORY ${PROJECT_SOURCE_DIR}/include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 install (EXPORT h264p_export
-        FILE h264p-config.cmake
-        NAMESPACE thetastream::
-        DESTINATION ${h264p_INSTALL_CMAKEDIR}
+    FILE h264p-config.cmake
+    NAMESPACE thetastream::
+    DESTINATION ${h264p_INSTALL_CMAKEDIR}
 )
 
 # Defines write_basic_package_version_file

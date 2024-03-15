@@ -28,17 +28,22 @@ ExternalProject_Get_Property(cajun SOURCE_DIR)
 set(CAJUN_DIR "${SOURCE_DIR}")
 
 include_directories(${CAJUN_DIR}/include/cajun)
-include_directories(${CMAKE_BINARY_DIR}/h264p/loki-lib-prefix/src/loki-lib/include/)
 
-add_executable(h264ptest)
+add_executable(avc2json)
 
-file(GLOB SRC_LIST src/*.cpp)
+target_sources(avc2json PRIVATE
+    src/h264p.cpp
+    src/MDPMParser.cpp
+    src/MDPMParser.h
+    src/SEIParser.cpp
+    src/SEIParser.h
+    src/TestH264Parser.cpp
+    src/TestH264Parser.h
+)
 
-target_sources(h264ptest PRIVATE ${SRC_LIST})
+add_dependencies(avc2json cajun)
 
-add_dependencies(h264ptest cajun)
-
-target_link_libraries(h264ptest PRIVATE h264p)
+target_link_libraries(avc2json PRIVATE h264p)
 
 # specify the C++ standard
 target_compile_features(
@@ -52,4 +57,4 @@ enable_testing()
 set(args ${PROJECT_SOURCE_DIR}/sample/svt_testset_420_720p50_klved_4774.h264)
 
 add_test(NAME Parse
-	COMMAND h264ptest ${args})
+    COMMAND avc2json ${args})
