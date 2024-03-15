@@ -8,7 +8,7 @@ include(GNUInstallDirs)
 
 # This is the default install directory for config-file package cmake files
 # It is relative to install prefix.
-set(h264p_INSTALL_CMAKEDIR cmake CACHE PATH "Installation directory for config-file package cmake files")
+set(h264p_INSTALL_CMAKEDIR lib/cmake/h264p CACHE PATH "Installation directory for config-file package cmake files")
 
 # set the postfix "d" for the resulting .so or .dll files when building the
 # library in debug mode
