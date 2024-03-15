@@ -27,8 +27,6 @@ ExternalProject_Get_Property(cajun SOURCE_DIR)
 
 set(CAJUN_DIR "${SOURCE_DIR}")
 
-include_directories(${CAJUN_DIR}/include/cajun)
-
 add_executable(avc2json)
 
 target_sources(avc2json PRIVATE
@@ -43,13 +41,9 @@ target_sources(avc2json PRIVATE
 
 add_dependencies(avc2json cajun)
 
-target_link_libraries(avc2json PRIVATE h264p)
+target_include_directories(avc2json PRIVATE ${CAJUN_DIR}/include/cajun)
 
-# specify the C++ standard
-target_compile_features(
-    h264p
-    PUBLIC cxx_std_14
-)
+target_link_libraries(avc2json PRIVATE h264p)
 
 # Test cases
 enable_testing()

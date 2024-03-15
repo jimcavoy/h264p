@@ -31,8 +31,6 @@ ExternalProject_Get_Property(loki-lib SOURCE_DIR)
 
 set(LOKI_DIR "${SOURCE_DIR}")
 
-include_directories(${LOKI_DIR}/include)
-
 add_library(h264p STATIC)
 
 target_sources(h264p PRIVATE
@@ -72,7 +70,7 @@ target_compile_features(h264p
 target_include_directories(h264p
     PRIVATE src/h264p
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    INTERFACE $<BUILD_INTERFACE:${LOKI_DIR}/include>
+    PUBLIC $<BUILD_INTERFACE:${LOKI_DIR}/include>
 )
 
 install(TARGETS h264p
