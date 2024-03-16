@@ -1,14 +1,12 @@
 cmake_minimum_required (VERSION 3.21)
+
 project(h264p
-    VERSION 1.0.0
-    DESCRIPTION "H.264 parser library"
-    LANGUAGES C CXX)
+  VERSION 1.0.0
+  DESCRIPTION "H.264 parser library"
+  LANGUAGES CXX
+)
 
 include(GNUInstallDirs)
-
-# This is the default install directory for config-file package cmake files
-# It is relative to install prefix.
-set(h264p_INSTALL_CMAKEDIR lib/cmake/h264p CACHE PATH "Installation directory for config-file package cmake files")
 
 # set the postfix "d" for the resulting .so or .dll files when building the
 # library in debug mode
@@ -33,7 +31,8 @@ set(LOKI_DIR "${SOURCE_DIR}")
 
 add_library(h264p STATIC)
 
-target_sources(h264p PRIVATE
+target_sources(h264p 
+  PRIVATE
     include/h264p/h264prsr.h
     include/h264p/nalu.h
     include/h264p/naluimpl.h
@@ -64,13 +63,16 @@ add_dependencies(h264p loki-lib)
 
 # specify the C++ standard
 target_compile_features(h264p
-    PUBLIC cxx_std_14
+  PUBLIC 
+    cxx_std_14
 )
 
 target_include_directories(h264p
-    PRIVATE src/h264p
-    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    PUBLIC $<BUILD_INTERFACE:${LOKI_DIR}/include>
+  PRIVATE 
+    src/h264p
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${LOKI_DIR}/include>
 )
 
 install(TARGETS h264p
@@ -86,7 +88,7 @@ install (
 install (EXPORT h264p_export
     FILE h264p-config.cmake
     NAMESPACE thetastream::
-    DESTINATION ${h264p_INSTALL_CMAKEDIR}
+    DESTINATION lib/cmake/h264p
 )
 
 # Defines write_basic_package_version_file
@@ -107,5 +109,5 @@ write_basic_package_version_file(
 # in the same directory as `h264p-config.cmake` file.
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/h264p-config-version.cmake"
-  DESTINATION "${h264p_INSTALL_CMAKEDIR}"
+  DESTINATION lib/cmake/h264p
 )

@@ -14,8 +14,7 @@ add_subdirectory (h264p)
 include(ExternalProject)
 
 # Add an external project from a downloaded source archive
-ExternalProject_Add(
-  cajun
+ExternalProject_Add( cajun
   URL https://github.com/cajun-jsonapi/cajun-jsonapi/archive/refs/tags/2.1.1.tar.gz
   URL_HASH MD5=d84903f5243e4598df3929d421db399a
   CONFIGURE_COMMAND ""
@@ -29,7 +28,8 @@ set(CAJUN_DIR "${SOURCE_DIR}")
 
 add_executable(avc2json)
 
-target_sources(avc2json PRIVATE
+target_sources(avc2json
+  PRIVATE
     src/h264p.cpp
     src/MDPMParser.cpp
     src/MDPMParser.h
@@ -41,14 +41,19 @@ target_sources(avc2json PRIVATE
 
 add_dependencies(avc2json cajun)
 
-target_include_directories(avc2json PRIVATE ${CAJUN_DIR}/include/cajun)
+target_include_directories(avc2json
+  PRIVATE
+    ${CAJUN_DIR}/include/cajun
+)
 
-target_link_libraries(avc2json PRIVATE h264p)
+target_link_libraries(avc2json 
+  PRIVATE
+    h264p
+)
 
 # Test cases
 enable_testing()
 
-set(args ${PROJECT_SOURCE_DIR}/sample/svt_testset_420_720p50_klved_4774.h264)
-
 add_test(NAME Parse
-    COMMAND avc2json ${args})
+  COMMAND avc2json ${PROJECT_SOURCE_DIR}/sample/svt_testset_420_720p50_klved_4774.h264
+)
