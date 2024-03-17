@@ -1,5 +1,5 @@
 # h264p
-H.264/AVC Parser library and test application.
+H.264/AVC Parser library and test application, __avc2json__.
 
 ## To Build and Install
 In h264p root directory, build and install this project using CMake:
@@ -10,7 +10,7 @@ In h264p root directory, build and install this project using CMake:
 	
 3. cmake --install ./build
 	
-Add additional CMake parameters as required depending on your host development envirnoment.
+Add additional CMake parameters as required depending on your host development environment.
 
 The `--install` command will install a CMake package so it can be imported into other CMake projects.
 
