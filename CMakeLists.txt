@@ -10,21 +10,8 @@ project (h264p
 # Include sub-projects.
 add_subdirectory (h264p)
 
-# include the module `ExternalProject`
-include(ExternalProject)
-
-# Add an external project from a downloaded source archive
-ExternalProject_Add( cajun
-  URL https://github.com/cajun-jsonapi/cajun-jsonapi/archive/refs/tags/2.1.1.tar.gz
-  URL_HASH MD5=d84903f5243e4598df3929d421db399a
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
-  INSTALL_COMMAND ""
-)
-
-ExternalProject_Get_Property(cajun SOURCE_DIR)
-
-set(CAJUN_DIR "${SOURCE_DIR}")
+set(Boost_USE_STATIC_LIBS ON)
+find_package(Boost REQUIRED COMPONENTS json)
 
 add_executable(avc2json)
 
@@ -39,16 +26,14 @@ target_sources(avc2json
     src/TestH264Parser.h
 )
 
-add_dependencies(avc2json cajun)
-
 target_include_directories(avc2json
   PRIVATE
-    ${CAJUN_DIR}/include/cajun
-)
+    ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(avc2json 
   PRIVATE
     h264p
+    Boost::json
 )
 
 # Test cases

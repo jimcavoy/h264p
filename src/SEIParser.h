@@ -2,8 +2,8 @@
 #include <loki/Visitor.h>
 
 #include <h264p/seiimpl.h>
-#include <functional>
-#include <json/elements.h>
+
+#include <boost/json.hpp>
 
 #include <memory.h>
 #include <vector>
@@ -63,7 +63,7 @@ public:
 	void Visit(ThetaStream::SEIUserDataUnreg& sei);
 	void Visit(ThetaStream::SEIDefault& sei);
 
-	json::Array& getSEI() {return seipayloads_;}
+	boost::json::array& getSEI() {return seipayloads_;}
 
 private:
 	void parseMDPMData(ThetaStream::SEIUserDataUnreg& sei);
@@ -71,6 +71,6 @@ private:
 
 private:
 	ElementCollection elements_;
-	json::Array seipayloads_;
+	boost::json::array seipayloads_;
 };
 
