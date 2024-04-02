@@ -1,11 +1,17 @@
 #pragma once
 #include <loki/Visitor.h>
 #include <h264p/seiimpl.h>
-#include <functional>
-#include <json/elements.h>
 
 #include <memory.h>
 #include <vector>
+
+namespace boost
+{
+	namespace json
+	{
+		class object;
+	}
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // This class represents a Modified Digital Video Pack Metadata (MDPM) element
@@ -52,13 +58,13 @@ public:
 	typedef std::vector<MDPMElement> ElementCollection;
 	typedef ElementCollection::iterator iterator;
 public:
-	MDPMParser(json::Object& nalu);
+	MDPMParser(boost::json::object& nalu);
 	~MDPMParser(void);
 
 	void Visit(ThetaStream::SEIUserDataUnreg& sei);
 
 private:
 	ElementCollection elements_;
-	json::Object& nalu_;
+	boost::json::object& nalu_;
 };
 

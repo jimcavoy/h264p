@@ -1,24 +1,27 @@
 #pragma once
 #include <h264p/h264prsr.h>
 #include <functional>
-#include <json/elements.h>
+#include <memory>
 
-/// <summary>
-/// 
-/// </summary>
-/// <seealso cref="ThetaStream::H264Parser" />
+/**
+ * @brief 
+ */
 class TestH264Parser :
-	public ThetaStream::H264Parser
+    public ThetaStream::H264Parser
 {
 public:
-	TestH264Parser(const char* filename);
-	virtual ~TestH264Parser(void);
+    TestH264Parser(const char* filename);
+    virtual ~TestH264Parser(void);
 
-	virtual void onNALUnit( ThetaStream::NALUnit& nalu) override;
+    /**
+     * @brief 
+     * @param nalu [in] 
+     */
+    virtual void onNALUnit(ThetaStream::NALUnit& nalu) override;
 
 private:
-	unsigned int count_;
-	json::Object	root_;
-	json::Array		nalus_;
+
+    class Impl;
+    std::unique_ptr<Impl> _pimpl;
 };
 
