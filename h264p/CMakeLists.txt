@@ -91,6 +91,10 @@ install (EXPORT h264p_export
     DESTINATION lib/cmake/h264p
 )
 
+if (WIN32)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/Debug/h264pd.pdb DESTINATION lib OPTIONAL)
+endif()
+
 # Defines write_basic_package_version_file
 include(CMakePackageConfigHelpers)
 
