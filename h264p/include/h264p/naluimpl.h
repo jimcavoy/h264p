@@ -5,277 +5,264 @@
 
 #include "sei.h"
 
-#include "loki/Visitor.h"
+#include <loki/Visitor.h>
+
+/// @file Contains class definitions for NAL Unit Implementation types.
 
 namespace ThetaStream
 {
+    /// @brief Base NAL Unit Implementation class
+    class NALUnitImpl
+        : public Loki::BaseVisitable<>
+    {
+    public:
+        typedef std::vector<uint8_t> RawByteStreamPayload;
+        typedef RawByteStreamPayload::iterator iterator;
+    public:
+        NALUnitImpl(uint8_t nut);
+        virtual ~NALUnitImpl();
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitImpl
-class NALUnitImpl
-	: public Loki::BaseVisitable<>
-{
-public:
-	typedef std::vector<uint8_t> RawByteStreamPayload;
-	typedef RawByteStreamPayload::iterator iterator;
-public:
-	NALUnitImpl(uint8_t nut);
-	virtual ~NALUnitImpl();
+        virtual void parse(NALUnitImpl::iterator first
+            , NALUnitImpl::iterator last) = 0;
 
-	virtual void parse(NALUnitImpl::iterator first
-		,NALUnitImpl::iterator last) = 0;
+    protected:
+        unsigned char nal_unit_type;
+    };
 
-protected:
-	unsigned char nal_unit_type;
-};
+    /// @brief Coded slice data partition A
+    class NALUnitDPA
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitDPA();
+        virtual ~NALUnitDPA();
 
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitDPA - Coded slice data partition A
-class NALUnitDPA
-	: public NALUnitImpl
-{
-public:
-	NALUnitDPA();
-	virtual ~NALUnitDPA();
-
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
-
-	LOKI_DEFINE_VISITABLE()
-};
-
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitDPB - Coded slice data partition B
-class NALUnitDPB
-	: public NALUnitImpl
-{
-public:
-	NALUnitDPB();
-	virtual ~NALUnitDPB();
-
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
-
-	LOKI_DEFINE_VISITABLE()
-};
-
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitDPC - Coded slice data partition A
-class NALUnitDPC
-	: public NALUnitImpl
-{
-public:
-	NALUnitDPC();
-	virtual ~NALUnitDPC();
-
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
-
-	LOKI_DEFINE_VISITABLE()
-};
-
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitSEI - Supplemental Enhancement Information
-class NALUnitSEI
-	: public NALUnitImpl
-{
-public:
-	typedef std::vector<SEI> sei_payloads_type;
-	typedef sei_payloads_type::iterator iterator;
-public:
-	NALUnitSEI();
-	virtual ~NALUnitSEI();
-
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
-
-	LOKI_DEFINE_VISITABLE()
-
-	sei_payloads_type::iterator begin();
-	sei_payloads_type::iterator end();
-
-private:
-	sei_payloads_type _sei_payloads;
-};
+        LOKI_DEFINE_VISITABLE()
+    };
 
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitAUD - Access Unit Delimiter
-class NALUnitAUD
-	: public NALUnitImpl
-{
-public:
-	NALUnitAUD();
-	virtual ~NALUnitAUD();
+    /// @brief Coded slice data partition B
+    class NALUnitDPB
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitDPB();
+        virtual ~NALUnitDPB();
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-	unsigned short primary_pic_type() const;
+        LOKI_DEFINE_VISITABLE()
+    };
 
-	LOKI_DEFINE_VISITABLE()
+    /// @brief Coded slice data partition A
+    class NALUnitDPC
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitDPC();
+        virtual ~NALUnitDPC();
 
-private:
-	unsigned char primary_pic_type_;
-};
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitEOSEQ - End of Sequence
-class NALUnitEOSEQ
-	: public NALUnitImpl
-{
-public:
-	NALUnitEOSEQ();
-	virtual ~NALUnitEOSEQ();
+        LOKI_DEFINE_VISITABLE()
+    };
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+    /// @brief Supplemental Enhancement Information
+    class NALUnitSEI
+        : public NALUnitImpl
+    {
+    public:
+        typedef std::vector<SEI> sei_payloads_type;
+        typedef sei_payloads_type::iterator iterator;
+    public:
+        NALUnitSEI();
+        virtual ~NALUnitSEI();
 
-	LOKI_DEFINE_VISITABLE()
-};
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitEOStream - End of Stream
-class NALUnitEOStream
-	: public NALUnitImpl
-{
-public:
-	NALUnitEOStream();
-	virtual ~NALUnitEOStream();
+        LOKI_DEFINE_VISITABLE()
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+            sei_payloads_type::iterator begin();
+        sei_payloads_type::iterator end();
 
-	LOKI_DEFINE_VISITABLE()
-};
+    private:
+        sei_payloads_type _sei_payloads;
+    };
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitFill - Filler Data
-class NALUnitFill
-	: public NALUnitImpl
-{
-public:
-	NALUnitFill();
-	virtual ~NALUnitFill();
+    /// @brief Access Unit Delimiter
+    class NALUnitAUD
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitAUD();
+        virtual ~NALUnitAUD();
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-	LOKI_DEFINE_VISITABLE()
-};
+        unsigned short primary_pic_type() const;
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitSPSE - Sequence Parameter Set Extension
-class NALUnitSPSE
-	: public NALUnitImpl
-{
-public:
-	NALUnitSPSE();
-	virtual ~NALUnitSPSE();
+        LOKI_DEFINE_VISITABLE()
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+    private:
+        unsigned char primary_pic_type_;
+    };
 
-	LOKI_DEFINE_VISITABLE()
-};
+    /// @brief End of Sequence
+    class NALUnitEOSEQ
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitEOSEQ();
+        virtual ~NALUnitEOSEQ();
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitPrefixNALU - Prefix NAL Unit
-class NALUnitPrefixNALU
-	: public NALUnitImpl
-{
-public:
-	NALUnitPrefixNALU();
-	virtual ~NALUnitPrefixNALU();
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+        LOKI_DEFINE_VISITABLE()
+    };
 
-	LOKI_DEFINE_VISITABLE()
-};
+    /// @brief End of Stream
+    class NALUnitEOStream
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitEOStream();
+        virtual ~NALUnitEOStream();
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitSubsetSPS - Subset sequence parameter set
-class NALUnitSubsetSPS
-	: public NALUnitImpl
-{
-public:
-	NALUnitSubsetSPS();
-	virtual ~NALUnitSubsetSPS();
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+        LOKI_DEFINE_VISITABLE()
+    };
 
-	LOKI_DEFINE_VISITABLE()
-};
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitSliceWithoutPartitioning - Coded slice of an auxiliary coded 
-// picture without partitioning
-class NALUnitSliceWithoutPartitioning
-	: public NALUnitImpl
-{
-public:
-	NALUnitSliceWithoutPartitioning();
-	virtual ~NALUnitSliceWithoutPartitioning();
+    /// @brief Filler Data
+    class NALUnitFill
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitFill();
+        virtual ~NALUnitFill();
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-	LOKI_DEFINE_VISITABLE()
-};
+        LOKI_DEFINE_VISITABLE()
+    };
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitSliceExtension - Coded slice extension
-class NALUnitSliceExtension
-	: public NALUnitImpl
-{
-public:
-	NALUnitSliceExtension();
-	virtual ~NALUnitSliceExtension();
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+    /// @brief Sequence Parameter Set Extension
+    class NALUnitSPSE
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitSPSE();
+        virtual ~NALUnitSPSE();
 
-	LOKI_DEFINE_VISITABLE()
-};
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitUnspecified
-class NALUnitUnspecified
-	: public NALUnitImpl
-{
-public:
-	NALUnitUnspecified(unsigned char nut);
-	virtual ~NALUnitUnspecified();
+        LOKI_DEFINE_VISITABLE()
+    };
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-	unsigned char type() const;
+    /// @brief Prefix NAL Unit
+    class NALUnitPrefixNALU
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitPrefixNALU();
+        virtual ~NALUnitPrefixNALU();
 
-	LOKI_DEFINE_VISITABLE()
-};
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitReserved
-class NALUnitReserved
-	: public NALUnitImpl
-{
-public:
-	NALUnitReserved(unsigned char nut);
-	virtual ~NALUnitReserved();
+        LOKI_DEFINE_VISITABLE()
+    };
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+    /// @brief Subset sequence parameter set
+    class NALUnitSubsetSPS
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitSubsetSPS();
+        virtual ~NALUnitSubsetSPS();
 
-	unsigned char type() const;
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-	LOKI_DEFINE_VISITABLE()
-};
+        LOKI_DEFINE_VISITABLE()
+    };
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUnitUnknown
-class NALUnitUnknown
-	: public NALUnitImpl
-{
-public:
-	NALUnitUnknown(unsigned char nut);
-	virtual ~NALUnitUnknown();
+    /// @brief Coded slice of an auxiliary coded picture without partitioning
+    class NALUnitSliceWithoutPartitioning
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitSliceWithoutPartitioning();
+        virtual ~NALUnitSliceWithoutPartitioning();
 
-	void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
 
-	unsigned char type() const;
+        LOKI_DEFINE_VISITABLE()
+    };
 
-	LOKI_DEFINE_VISITABLE()
-};
+
+    /// @brief Coded slice extension
+    class NALUnitSliceExtension
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitSliceExtension();
+        virtual ~NALUnitSliceExtension();
+
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+
+        LOKI_DEFINE_VISITABLE()
+    };
+
+
+    /// @brief Unspecified type
+    class NALUnitUnspecified
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitUnspecified(unsigned char nut);
+        virtual ~NALUnitUnspecified();
+
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+
+        unsigned char type() const;
+
+        LOKI_DEFINE_VISITABLE()
+    };
+
+    /// @brief Reserved NAL Unit
+    class NALUnitReserved
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitReserved(unsigned char nut);
+        virtual ~NALUnitReserved();
+
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+
+        unsigned char type() const;
+
+        LOKI_DEFINE_VISITABLE()
+    };
+
+
+    /// @brief Unknown NAL Unit
+    class NALUnitUnknown
+        : public NALUnitImpl
+    {
+    public:
+        NALUnitUnknown(unsigned char nut);
+        virtual ~NALUnitUnknown();
+
+        void parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last);
+
+        unsigned char type() const;
+
+        LOKI_DEFINE_VISITABLE()
+    };
 
 };
 

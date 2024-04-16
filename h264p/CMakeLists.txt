@@ -69,7 +69,8 @@ target_compile_features(h264p
 
 target_include_directories(h264p
   PRIVATE 
-    src/h264p
+    src
+    include/h264p
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<BUILD_INTERFACE:${LOKI_DIR}/include>

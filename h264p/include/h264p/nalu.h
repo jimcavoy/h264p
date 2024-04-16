@@ -8,45 +8,43 @@
 
 namespace ThetaStream
 {
+    /// @brief Network Abstraction Layer (NAL) Unit.
+    /// 
+    class NALUnit
+        : public Loki::BaseVisitable<>
+    {
+    public:
+        typedef std::vector<uint8_t> RawByteStreamPayload;
+        typedef RawByteStreamPayload::iterator iterator;
+        typedef RawByteStreamPayload::const_iterator const_iterator;
+    public:
+        NALUnit(unsigned short startcodeprefix_len = 4);
+        ~NALUnit();
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUint
+        NALUnit& operator=(const NALUnit& rhs);
+        NALUnit(const NALUnit& orig);
 
-class NALUnit 
-	: public Loki::BaseVisitable<>
-{
-public:
-	typedef std::vector<uint8_t> RawByteStreamPayload;
-	typedef RawByteStreamPayload::iterator iterator;
-	typedef RawByteStreamPayload::const_iterator const_iterator;
-public:
-	NALUnit(unsigned short startcodeprefix_len=4);
-	~NALUnit();
+        NALUnit& operator=(NALUnit&& rhs) noexcept;
+        NALUnit(NALUnit&& other) noexcept;
 
-	NALUnit& operator=(const NALUnit& rhs);
-	NALUnit(const NALUnit& orig);
+        unsigned short startcodeprefix_len() const;
+        uint8_t nal_ref_idc() const;
 
-	NALUnit& operator=(NALUnit&& rhs) noexcept;
-	NALUnit(NALUnit&& other) noexcept;
+        unsigned int size() const;
+        void push_back(uint8_t c);
+        void parse();
 
-	unsigned short startcodeprefix_len() const;
-	uint8_t nal_ref_idc() const;
+        iterator begin();
+        iterator end();
 
-	unsigned int size() const;
-	void push_back(uint8_t c);
-	void parse();
+        const uint8_t* data() const;
 
-	iterator begin();
-	iterator end();
+        void Accept(Loki::BaseVisitor& visitor);
 
-	const uint8_t* data() const;
-
-	void Accept(Loki::BaseVisitor& visitor); 
-
-private:
-	class Impl;
-	std::unique_ptr<Impl> _pimpl;
-};
+    private:
+        class Impl;
+        std::unique_ptr<Impl> _pimpl;
+    };
 
 }
 
