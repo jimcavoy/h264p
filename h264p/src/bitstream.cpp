@@ -43,7 +43,7 @@ static int RBSPtoSODB(uint8_t *streamBuffer, int last_byte_pos)
 
 /////////////////////////////////////////////////////////////////////////////
 // Bitstream
-Bitstream::Bitstream(ThetaStream::NALUnitImpl::iterator first, ThetaStream::NALUnitImpl::iterator last, size_t len)
+ThetaStream::Bitstream::Bitstream(ThetaStream::NALUnitImpl::iterator first, ThetaStream::NALUnitImpl::iterator last, size_t len)
 	: read_len(0)
 	, frame_bitoffset(0)
 	, ei_flag(0)
@@ -67,7 +67,7 @@ Bitstream::Bitstream(ThetaStream::NALUnitImpl::iterator first, ThetaStream::NALU
 	code_len = bitstream_length = RBSPtoSODB(streamBuffer, (int)len);
 }
 
-Bitstream::~Bitstream()
+ThetaStream::Bitstream::~Bitstream()
 {
 	delete[] streamBuffer;
 }

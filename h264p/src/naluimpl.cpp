@@ -1,12 +1,8 @@
-#include <h264p/naluimpl.h>
+#include "naluimpl.h"
 
 #include "util.h"
 
 #include <iterator>
-
-#ifdef _DEBUG
-#define new DEBUG_CLIENTBLOCK
-#endif
 
 using namespace std;
 using namespace ThetaStream;
@@ -14,7 +10,7 @@ using namespace ThetaStream;
 
 
 NALUnitImpl::NALUnitImpl(uint8_t nut)
-	:nal_unit_type(nut)
+    :nal_unit_type(nut)
 {
 
 }
@@ -28,7 +24,7 @@ NALUnitImpl::~NALUnitImpl()
 // NALUnitDPA
 
 NALUnitDPA::NALUnitDPA()
-	:NALUnitImpl(0x02)
+    :NALUnitImpl(0x02)
 {
 
 }
@@ -47,7 +43,7 @@ void NALUnitDPA::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last)
 // NALUnitDPB
 
 NALUnitDPB::NALUnitDPB()
-	:NALUnitImpl(0x03)
+    :NALUnitImpl(0x03)
 {
 
 }
@@ -66,7 +62,7 @@ void NALUnitDPB::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last)
 // NALUnitDPC
 
 NALUnitDPC::NALUnitDPC()
-	:NALUnitImpl(0x04)
+    :NALUnitImpl(0x04)
 {
 
 }
@@ -86,7 +82,7 @@ void NALUnitDPC::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last)
 // NALUnitSEI
 
 NALUnitSEI::NALUnitSEI()
-	:NALUnitImpl(0x06)
+    :NALUnitImpl(0x06)
 {
 
 }
@@ -98,83 +94,83 @@ NALUnitSEI::~NALUnitSEI()
 
 void NALUnitSEI::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last)
 {
-	NALUnitImpl::RawByteStreamPayload rbsp;
-	NALUnitImpl::RawByteStreamPayload payload;
-	removeEmulationPrevention3Bytes(std::back_inserter(rbsp), first, last);
-	size_t payloadSz = 0;
-	int offset = 1;
-	int state = 0; // 0 = type, 1 = size, 2 payload
+    NALUnitImpl::RawByteStreamPayload rbsp;
+    NALUnitImpl::RawByteStreamPayload payload;
+    removeEmulationPrevention3Bytes(std::back_inserter(rbsp), first, last);
+    size_t payloadSz = 0;
+    int offset = 1;
+    int state = 0; // 0 = type, 1 = size, 2 payload
 
-	// start at index 1 to skip over NAL Unit type.
-	for (size_t i = 1; i < rbsp.size(); i++)
-	{
-		switch (state)
-		{
-		case 0: 
-		{
-			unsigned char type = rbsp[i];
-			if (type >= 0 && type < 47)
-			{
-				payload.push_back(rbsp[i]);
-				state = 1;
-			}
-			else
-				return;
-		}
-		break;
-		case 1: 
-		{
-			unsigned char sz = rbsp[i];
-			if (sz == 0xff)
-			{
-				payloadSz += 0xff;
-			}
-			else
-			{
-				payloadSz += sz;
-				state = 2;
-			}
-			payload.push_back(rbsp[i]);
-			offset++;
+    // start at index 1 to skip over NAL Unit type.
+    for (size_t i = 1; i < rbsp.size(); i++)
+    {
+        switch (state)
+        {
+        case 0:
+        {
+            unsigned char type = rbsp[i];
+            if (type >= 0 && type < 47)
+            {
+                payload.push_back(rbsp[i]);
+                state = 1;
+            }
+            else
+                return;
+        }
+        break;
+        case 1:
+        {
+            unsigned char sz = rbsp[i];
+            if (sz == 0xff)
+            {
+                payloadSz += 0xff;
+            }
+            else
+            {
+                payloadSz += sz;
+                state = 2;
+            }
+            payload.push_back(rbsp[i]);
+            offset++;
 
-			if (payloadSz > rbsp.size())
-				return;
-		}
-		break;
-		case 2:
-		{
-			state = 0;
-			SEI sei;
-			payload.insert(payload.begin() + offset, &rbsp[i], &rbsp[i + payloadSz]);
-			std::copy(payload.begin(), payload.end(), back_inserter(sei.rbsp_));
-			sei.parse();
-			_sei_payloads.push_back(std::forward<SEI>(sei));
-			i += (payloadSz - 1);
-			payload.clear();
-			payloadSz = 0;
-			offset = 1;
-		}
-		break;
-		}
-	}
+            if (payloadSz > rbsp.size())
+                return;
+        }
+        break;
+        case 2:
+        {
+            state = 0;
+            SEI sei;
+            payload.insert(payload.begin() + offset, &rbsp[i], &rbsp[i + payloadSz]);
+            std::copy(payload.begin(), payload.end(), back_inserter(sei.rbsp_));
+            sei.parse();
+            _sei_payloads.push_back(std::forward<SEI>(sei));
+            i += (payloadSz - 1);
+            payload.clear();
+            payloadSz = 0;
+            offset = 1;
+        }
+        break;
+        }
+    }
 }
 
 NALUnitSEI::sei_payloads_type::iterator NALUnitSEI::begin()
 {
-	return _sei_payloads.begin();
+    return _sei_payloads.begin();
 }
 
 NALUnitSEI::sei_payloads_type::iterator NALUnitSEI::end()
 {
-	return _sei_payloads.end();
+    return _sei_payloads.end();
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // NALUnitAUD
 
 NALUnitAUD::NALUnitAUD()
-	:NALUnitImpl(0x09)
-	,primary_pic_type_(0)
+    :NALUnitImpl(0x09)
+    , primary_pic_type_(0)
 {
 
 }
@@ -186,34 +182,34 @@ NALUnitAUD::~NALUnitAUD()
 
 void NALUnitAUD::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last)
 {
-	NALUnitImpl::iterator it = first;
-	it++;
-	if (it != last)
-		primary_pic_type_ = *it;
+    NALUnitImpl::iterator it = first;
+    it++;
+    if (it != last)
+        primary_pic_type_ = *it;
 }
 
 unsigned short NALUnitAUD::primary_pic_type() const
 {
-	unsigned short r = 0;
+    unsigned short r = 0;
 
-	switch (primary_pic_type_) {
-	case 0x10: r = 0; break;
-	case 0x30: r = 1; break;
-	case 0x50: r = 2; break;
-	case 0x70: r = 3; break;
-	case 0x90: r = 4; break;
-	case 0xb0: r = 5; break;
-	case 0xd0: r = 6; break;
-	case 0xf0: r = 7; break;
-	}
-	return r;
+    switch (primary_pic_type_) {
+    case 0x10: r = 0; break;
+    case 0x30: r = 1; break;
+    case 0x50: r = 2; break;
+    case 0x70: r = 3; break;
+    case 0x90: r = 4; break;
+    case 0xb0: r = 5; break;
+    case 0xd0: r = 6; break;
+    case 0xf0: r = 7; break;
+    }
+    return r;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // NALUnitEOSEQ
 
 NALUnitEOSEQ::NALUnitEOSEQ()
-	:NALUnitImpl(0x0A)
+    :NALUnitImpl(0x0A)
 {
 
 }
@@ -232,7 +228,7 @@ void NALUnitEOSEQ::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last
 // NALUnitEOStream
 
 NALUnitEOStream::NALUnitEOStream()
-	:NALUnitImpl(0x0B)
+    :NALUnitImpl(0x0B)
 {
 
 }
@@ -251,7 +247,7 @@ void NALUnitEOStream::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator l
 // NALUnitFill
 
 NALUnitFill::NALUnitFill()
-	:NALUnitImpl(0x0C)
+    :NALUnitImpl(0x0C)
 {
 
 }
@@ -270,7 +266,7 @@ void NALUnitFill::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last)
 // NALUnitSPSE
 
 NALUnitSPSE::NALUnitSPSE()
-	:NALUnitImpl(0x0D)
+    :NALUnitImpl(0x0D)
 {
 
 }
@@ -289,7 +285,7 @@ void NALUnitSPSE::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator last)
 // NALUnitPrefixNALU
 
 NALUnitPrefixNALU::NALUnitPrefixNALU()
-	:NALUnitImpl(0x0E)
+    :NALUnitImpl(0x0E)
 {
 
 }
@@ -308,7 +304,7 @@ void NALUnitPrefixNALU::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator
 // NALUnitSubsetSPS
 
 NALUnitSubsetSPS::NALUnitSubsetSPS()
-	:NALUnitImpl(0x0F)
+    :NALUnitImpl(0x0F)
 {
 
 }
@@ -327,7 +323,7 @@ void NALUnitSubsetSPS::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator 
 // NALUnitSliceWithoutPartitioning
 
 NALUnitSliceWithoutPartitioning::NALUnitSliceWithoutPartitioning()
-	:NALUnitImpl(0x13)
+    :NALUnitImpl(0x13)
 {
 
 }
@@ -346,7 +342,7 @@ void NALUnitSliceWithoutPartitioning::parse(NALUnitImpl::iterator first, NALUnit
 // NALUnitSliceExtension
 
 NALUnitSliceExtension::NALUnitSliceExtension()
-	:NALUnitImpl(0x14)
+    :NALUnitImpl(0x14)
 {
 
 }
@@ -365,7 +361,7 @@ void NALUnitSliceExtension::parse(NALUnitImpl::iterator first, NALUnitImpl::iter
 // NALUnitUnspecified
 
 NALUnitUnspecified::NALUnitUnspecified(unsigned char type)
-	:NALUnitImpl(type)
+    :NALUnitImpl(type)
 {
 
 }
@@ -382,14 +378,14 @@ void NALUnitUnspecified::parse(NALUnitImpl::iterator first, NALUnitImpl::iterato
 
 unsigned char NALUnitUnspecified::type() const
 {
-	return nal_unit_type;
+    return nal_unit_type;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // NALUnitReserved
 
 NALUnitReserved::NALUnitReserved(unsigned char type)
-	:NALUnitImpl(type)
+    :NALUnitImpl(type)
 {
 
 }
@@ -406,13 +402,13 @@ void NALUnitReserved::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator l
 
 unsigned char NALUnitReserved::type() const
 {
-	return nal_unit_type;
+    return nal_unit_type;
 }
 /////////////////////////////////////////////////////////////////////////////
 // NALUnitUnknown
 
 NALUnitUnknown::NALUnitUnknown(unsigned char type)
-	:NALUnitImpl(type)
+    :NALUnitImpl(type)
 {
 
 }
@@ -429,5 +425,5 @@ void NALUnitUnknown::parse(NALUnitImpl::iterator first, NALUnitImpl::iterator la
 
 unsigned char NALUnitUnknown::type() const
 {
-	return nal_unit_type;
+    return nal_unit_type;
 }

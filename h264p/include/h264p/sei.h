@@ -9,38 +9,37 @@
 namespace ThetaStream
 {
 
-class SEIimpl;
+    class SEIimpl;
 
-/////////////////////////////////////////////////////////////////////////////
-// NALUint
+    /// @brief Supplemental Enhancement Information.
+    /// SEI is a handle class that HAS A implementation body.
+    class SEI
+        : public Loki::BaseVisitable<>
+    {
+    public:
+        typedef std::vector<uint8_t> RawByteStreamPayload;
+    public:
+        SEI();
+        ~SEI();
+        SEI& operator=(const SEI& rhs);
+        SEI(const SEI& orig);
+        SEI(SEI&& src) noexcept;
+        SEI& operator=(SEI&& rhs) noexcept;
 
-class SEI 
-	: public Loki::BaseVisitable<>
-{
-public:
-	typedef std::vector<uint8_t> RawByteStreamPayload;
-public:
-	SEI();
-	~SEI();
-	SEI& operator=(const SEI& rhs);
-	SEI(const SEI& orig);
-	SEI(SEI&& src) noexcept;
-	SEI& operator=(SEI&& rhs) noexcept;
+        void swap(SEI& src);
 
-	void swap( SEI& src);
+        unsigned int size() const;
+        void push_back(uint8_t c);
+        void parse();
 
-	unsigned int size() const;
-	void push_back(uint8_t c);
-	void parse();
+        void Accept(Loki::BaseVisitor& visitor);
 
-	void Accept(Loki::BaseVisitor& visitor); 
+    private:
+        std::shared_ptr<SEIimpl> pimpl_;
 
-private:
-	std::shared_ptr<SEIimpl> pimpl_;
-
-public:
-	RawByteStreamPayload rbsp_;
-};
+    public:
+        RawByteStreamPayload rbsp_;
+    };
 
 }
 

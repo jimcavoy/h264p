@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 3.21)
 
 project(h264p
-  VERSION 1.0.0
-  DESCRIPTION "H.264 parser library"
+  VERSION 1.0.1
+  DESCRIPTION "H.264/AVC parser library"
   LANGUAGES CXX
 )
 
@@ -69,7 +69,8 @@ target_compile_features(h264p
 
 target_include_directories(h264p
   PRIVATE 
-    src/h264p
+    src
+    include/h264p
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<BUILD_INTERFACE:${LOKI_DIR}/include>

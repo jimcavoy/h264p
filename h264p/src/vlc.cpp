@@ -4,12 +4,14 @@
 
 typedef unsigned char byte;
 
+using namespace ThetaStream;
+
 /*
  ************************************************************************
  * SyntaxElement
  ************************************************************************
 */
-SyntaxElement::SyntaxElement()
+ThetaStream::SyntaxElement::SyntaxElement()
 	:type(0)
 	, value1(0)
 	, value2(0)
@@ -23,7 +25,7 @@ SyntaxElement::SyntaxElement()
 
 }
 
-SyntaxElement::~SyntaxElement()
+ThetaStream::SyntaxElement::~SyntaxElement()
 {
 
 }
@@ -138,129 +140,132 @@ static int GetBits(byte buffer[], int totbitoffset, int* info, int bitcount,
 	}
 }
 
-int ue_v(Bitstream* bitstream)
+namespace ThetaStream
 {
-	SyntaxElement symbol;
+	int ue_v(ThetaStream::Bitstream* bitstream)
+	{
+		SyntaxElement symbol;
 
-	//assert (bitstream->streamBuffer != NULL);
-	symbol.mapping = linfo_ue;   // Mapping rule
-	readSyntaxElement_VLC(&symbol, bitstream);
-	return symbol.value1;
-}
+		//assert (bitstream->streamBuffer != NULL);
+		symbol.mapping = linfo_ue;   // Mapping rule
+		readSyntaxElement_VLC(&symbol, bitstream);
+		return symbol.value1;
+	}
 
-int se_v(Bitstream* bitstream)
-{
-	SyntaxElement symbol;
+	int se_v(ThetaStream::Bitstream* bitstream)
+	{
+		SyntaxElement symbol;
 
-	//assert (bitstream->streamBuffer != NULL);
-	symbol.mapping = linfo_se;   // Mapping rule: signed integer
-	readSyntaxElement_VLC(&symbol, bitstream);
-	return symbol.value1;
-}
+		//assert (bitstream->streamBuffer != NULL);
+		symbol.mapping = linfo_se;   // Mapping rule: signed integer
+		readSyntaxElement_VLC(&symbol, bitstream);
+		return symbol.value1;
+	}
 
-int u_v(int LenInBits, Bitstream* bitstream)
-{
-	SyntaxElement symbol;
-	symbol.inf = 0;
+	int u_v(int LenInBits, ThetaStream::Bitstream* bitstream)
+	{
+		SyntaxElement symbol;
+		symbol.inf = 0;
 
-	//assert (bitstream->streamBuffer != NULL);
-	symbol.mapping = linfo_ue;   // Mapping rule
-	symbol.len = LenInBits;
-	readSyntaxElement_FLC(&symbol, bitstream);
+		//assert (bitstream->streamBuffer != NULL);
+		symbol.mapping = linfo_ue;   // Mapping rule
+		symbol.len = LenInBits;
+		readSyntaxElement_FLC(&symbol, bitstream);
 
-	return symbol.inf;
-}
+		return symbol.inf;
+	}
 
-int i_v(int LenInBits, Bitstream* bitstream)
-{
-	SyntaxElement symbol;
-	symbol.inf = 0;
+	int i_v(int LenInBits, ThetaStream::Bitstream* bitstream)
+	{
+		SyntaxElement symbol;
+		symbol.inf = 0;
 
-	//assert (bitstream->streamBuffer != NULL);
-	symbol.mapping = linfo_ue;   // Mapping rule
-	symbol.len = LenInBits;
-	readSyntaxElement_FLC(&symbol, bitstream);
+		//assert (bitstream->streamBuffer != NULL);
+		symbol.mapping = linfo_ue;   // Mapping rule
+		symbol.len = LenInBits;
+		readSyntaxElement_FLC(&symbol, bitstream);
 
-	// can be negative
-	symbol.inf = -(symbol.inf & (1 << (LenInBits - 1))) | symbol.inf;
+		// can be negative
+		symbol.inf = -(symbol.inf & (1 << (LenInBits - 1))) | symbol.inf;
 
-	return symbol.inf;
-}
+		return symbol.inf;
+	}
 
-bool u_1(Bitstream* bitstream)
-{
-	return u_v(1, bitstream) == 1 ? true : false;
-}
+	bool u_1(ThetaStream::Bitstream* bitstream)
+	{
+		return u_v(1, bitstream) == 1 ? true : false;
+	}
 
-/*!
- ************************************************************************
- * \brief
- *    mapping rule for ue(v) syntax elements
- * \par Input:
- *    lenght and info
- * \par Output:
- *    number in the code table
- ************************************************************************
- */
-void linfo_ue(int len, int info, int* value1, int* dummy)
-{
-	//assert ((len >> 1) < 32);
-	*value1 = (int)(((unsigned int)1 << (len >> 1)) + (unsigned int)(info)-1);
-}
+	/*!
+	 ************************************************************************
+	 * \brief
+	 *    mapping rule for ue(v) syntax elements
+	 * \par Input:
+	 *    lenght and info
+	 * \par Output:
+	 *    number in the code table
+	 ************************************************************************
+	 */
+	void linfo_ue(int len, int info, int* value1, int* dummy)
+	{
+		//assert ((len >> 1) < 32);
+		*value1 = (int)(((unsigned int)1 << (len >> 1)) + (unsigned int)(info)-1);
+	}
 
-/*!
- ************************************************************************
- * \brief
- *    mapping rule for se(v) syntax elements
- * \par Input:
- *    lenght and info
- * \par Output:
- *    signed mvd
- ************************************************************************
- */
-void linfo_se(int len, int info, int* value1, int* dummy)
-{
-	//assert ((len >> 1) < 32);
-	unsigned int n = ((unsigned int)1 << (len >> 1)) + (unsigned int)info - 1;
-	*value1 = (n + 1) >> 1;
-	if ((n & 0x01) == 0) // lsb is signed bit
-		*value1 = -*value1;
-}
+	/*!
+	 ************************************************************************
+	 * \brief
+	 *    mapping rule for se(v) syntax elements
+	 * \par Input:
+	 *    lenght and info
+	 * \par Output:
+	 *    signed mvd
+	 ************************************************************************
+	 */
+	void linfo_se(int len, int info, int* value1, int* dummy)
+	{
+		//assert ((len >> 1) < 32);
+		unsigned int n = ((unsigned int)1 << (len >> 1)) + (unsigned int)info - 1;
+		*value1 = (n + 1) >> 1;
+		if ((n & 0x01) == 0) // lsb is signed bit
+			*value1 = -*value1;
+	}
 
-/*!
- ************************************************************************
- * \brief
- *    read next UVLC codeword from UVLC-partition and
- *    map it to the corresponding syntax element
- ************************************************************************
- */
-int readSyntaxElement_VLC(SyntaxElement* sym, Bitstream* currStream)
-{
-	sym->len = GetVLCSymbol(currStream->streamBuffer, currStream->frame_bitoffset, &(sym->inf), currStream->bitstream_length);
-	if (sym->len == -1)
-		return -1;
+	/*!
+	 ************************************************************************
+	 * \brief
+	 *    read next UVLC codeword from UVLC-partition and
+	 *    map it to the corresponding syntax element
+	 ************************************************************************
+	 */
+	int readSyntaxElement_VLC(SyntaxElement* sym, ThetaStream::Bitstream* currStream)
+	{
+		sym->len = GetVLCSymbol(currStream->streamBuffer, currStream->frame_bitoffset, &(sym->inf), currStream->bitstream_length);
+		if (sym->len == -1)
+			return -1;
 
-	currStream->frame_bitoffset += sym->len;
-	sym->mapping(sym->len, sym->inf, &(sym->value1), &(sym->value2));
+		currStream->frame_bitoffset += sym->len;
+		sym->mapping(sym->len, sym->inf, &(sym->value1), &(sym->value2));
 
-	return 1;
-}
+		return 1;
+	}
 
-/*!
- ************************************************************************
- * \brief
- *    read FLC codeword from UVLC-partition
- ************************************************************************
- */
-int readSyntaxElement_FLC(SyntaxElement* sym, Bitstream* currStream)
-{
-	int BitstreamLengthInBits = (currStream->bitstream_length << 3) + 7;
+	/*!
+	 ************************************************************************
+	 * \brief
+	 *    read FLC codeword from UVLC-partition
+	 ************************************************************************
+	 */
+	int readSyntaxElement_FLC(SyntaxElement* sym, ThetaStream::Bitstream* currStream)
+	{
+		int BitstreamLengthInBits = (currStream->bitstream_length << 3) + 7;
 
-	if ((GetBits(currStream->streamBuffer, currStream->frame_bitoffset, &(sym->inf), BitstreamLengthInBits, sym->len)) < 0)
-		return -1;
+		if ((GetBits(currStream->streamBuffer, currStream->frame_bitoffset, &(sym->inf), BitstreamLengthInBits, sym->len)) < 0)
+			return -1;
 
-	sym->value1 = sym->inf;
-	currStream->frame_bitoffset += sym->len; // move bitstream pointer
+		sym->value1 = sym->inf;
+		currStream->frame_bitoffset += sym->len; // move bitstream pointer
 
-	return 1;
+		return 1;
+	}
 }

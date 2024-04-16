@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 {
     if (argc != 2)
     {
-        cerr << "usage: h264p infile" << endl;
+        cerr << "usage: avc2json infile" << endl;
         return -1;
     }
 
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
         clock_t start, end;
         start = clock();
 
-        TestH264Parser p(argv[1]);
+        avc2json::TestH264Parser p(argv[1]);
 
         while (ifile.good())
         {
@@ -56,8 +56,6 @@ int main(int argc, char* argv[])
         cerr << "Unknown exception thrown\n";
     }
 
-    /*cerr << endl << "Enter any key to exit" << endl;
-    _getch();*/
     return 0;
 }
 
