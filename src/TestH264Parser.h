@@ -3,25 +3,26 @@
 #include <functional>
 #include <memory>
 
-/**
- * @brief 
- */
-class TestH264Parser :
-    public ThetaStream::H264Parser
+namespace avc2json
 {
-public:
-    TestH264Parser(const char* filename);
-    virtual ~TestH264Parser(void);
+    /// @brief TestH264Parser
+    class TestH264Parser :
+        public ThetaStream::H264Parser
+    {
+    public:
+        TestH264Parser(const char* filename);
+        virtual ~TestH264Parser(void);
 
-    /**
-     * @brief 
-     * @param nalu [in] 
-     */
-    virtual void onNALUnit(ThetaStream::NALUnit& nalu) override;
+        /**
+         * @brief Handle the event when parser finished parsing a NALUnit
+         * @param nalu [in] The NALUnit that was parsed.
+         */
+        virtual void onNALUnit(ThetaStream::NALUnit& nalu) override;
 
-private:
+    private:
 
-    class Impl;
-    std::unique_ptr<Impl> _pimpl;
-};
+        class Impl;
+        std::unique_ptr<Impl> _pimpl;
+    };
+}
 

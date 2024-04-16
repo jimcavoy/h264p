@@ -3,7 +3,7 @@
 #
 cmake_minimum_required (VERSION 3.21)
 project (h264p
-	VERSION 1.0.0
+	VERSION 1.0.1
 	DESCRIPTION "Advanced Video Coding (AVC)/H.264 Parser library and example application, avc2json"
 	LANGUAGES CXX)
 
@@ -17,7 +17,7 @@ add_executable(avc2json)
 
 target_sources(avc2json
   PRIVATE
-    src/h264p.cpp
+    src/main.cpp
     src/MDPMParser.cpp
     src/MDPMParser.h
     src/SEIParser.cpp
