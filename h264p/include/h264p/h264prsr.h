@@ -2,6 +2,7 @@
 #define H264PRSR_H
 
 #include <memory>
+#include <cstdint>
 
 namespace ThetaStream
 {
