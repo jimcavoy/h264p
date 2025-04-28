@@ -5,6 +5,7 @@
 #include <memory>
 
 #include <loki/Visitor.h>
+#include <cstdint>
 
 namespace ThetaStream
 {
