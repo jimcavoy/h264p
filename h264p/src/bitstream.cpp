@@ -1,6 +1,7 @@
 #include "bitstream.h"
 
 #include <iterator>
+#include <span>
 
 
 /*!
@@ -17,57 +18,42 @@
  *
 ************************************************************************/
 
-static int RBSPtoSODB(uint8_t *streamBuffer, int last_byte_pos)
+static int RBSPtoSODB(uint8_t* streamBuffer, int last_byte_pos)
 {
-	int ctr_bit, bitoffset;
+    int ctr_bit, bitoffset;
 
-	bitoffset = 0;
-	//find trailing 1
-	ctr_bit = (streamBuffer[last_byte_pos - 1] & (0x01 << bitoffset));   // set up control bit
+    bitoffset = 0;
+    //find trailing 1
+    ctr_bit = (streamBuffer[last_byte_pos - 1] & (0x01 << bitoffset));   // set up control bit
 
-	while (ctr_bit == 0)
-	{   // find trailing 1 bit
-		++bitoffset;
-		if (bitoffset == 8)
-		{
-			if (last_byte_pos == 0)
-				printf(" Panic: All zero data sequence in RBSP \n");
-			//assert(last_byte_pos != 0);
-			--last_byte_pos;
-			bitoffset = 0;
-		}
-		ctr_bit = streamBuffer[last_byte_pos - 1] & (0x01 << (bitoffset));
-	}
-	return(last_byte_pos);
+    while (ctr_bit == 0)
+    {   // find trailing 1 bit
+        ++bitoffset;
+        if (bitoffset == 8)
+        {
+            if (last_byte_pos == 0)
+                printf(" Panic: All zero data sequence in RBSP \n");
+            //assert(last_byte_pos != 0);
+            --last_byte_pos;
+            bitoffset = 0;
+        }
+        ctr_bit = streamBuffer[last_byte_pos - 1] & (0x01 << (bitoffset));
+    }
+    return(last_byte_pos);
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // Bitstream
 ThetaStream::Bitstream::Bitstream(ThetaStream::NALUnitImpl::iterator first, ThetaStream::NALUnitImpl::iterator last, size_t len)
-	: read_len(0)
-	, frame_bitoffset(0)
-	, ei_flag(0)
+    : streamBuffer(new uint8_t[len])
 {
-	using namespace std;
-	streamBuffer = new uint8_t[len];
-#ifdef _WIN32
-	std::copy(first, last,
-		stdext::checked_array_iterator<uint8_t*>(streamBuffer, len));
-#else
-	ThetaStream::NALUnitImpl::iterator it;
-	int i = 0;
-	for (it = first; it != last; ++it)
-	{
-		if (i < len)
-		{
-			streamBuffer[i++] = *it;
-		}
-	}
-#endif
-	code_len = bitstream_length = RBSPtoSODB(streamBuffer, (int)len);
+    std::span<uint8_t> data_span(first, last);
+    std::copy(data_span.begin(), data_span.end(), streamBuffer);
+
+    code_len = bitstream_length = RBSPtoSODB(streamBuffer, (int)len);
 }
 
 ThetaStream::Bitstream::~Bitstream()
 {
-	delete[] streamBuffer;
+    delete[] streamBuffer;
 }

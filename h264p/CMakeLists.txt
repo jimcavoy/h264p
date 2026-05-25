@@ -55,10 +55,7 @@ target_sources(h264p
 set_property(TARGET h264p PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # specify the C++ standard
-target_compile_features(h264p
-  PUBLIC 
-    cxx_std_14
-)
+target_compile_features(h264p PUBLIC cxx_std_20)
 
 target_include_directories(h264p
   PRIVATE 
