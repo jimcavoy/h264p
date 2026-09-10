@@ -2,6 +2,7 @@
 
 #include <iterator>
 #include <span>
+#include <cstdint>
 
 
 /*!

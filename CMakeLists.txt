@@ -3,7 +3,7 @@
 #
 cmake_minimum_required (VERSION 3.21)
 project (h264p
-	VERSION 1.0.1
+	VERSION 1.0.2
 	DESCRIPTION "Advanced Video Coding (AVC)/H.264 Parser library and example application, avc2json"
 	LANGUAGES CXX)
 
@@ -36,7 +36,7 @@ target_link_libraries(avc2json
     Boost::json
 )
 
-option(ENABLE_DOCUMENTATION "Enable documentation" ON)
+option(ENABLE_DOCUMENTATION "Enable documentation" OFF)
 
 if (ENABLE_DOCUMENTATION)
 ############################################################################
@@ -73,6 +73,8 @@ set(DOXYGEN_DOT_WRAP_THRESHOLD 100)
 set(DOXYGEN_CALL_GRAPH YES)
 # Suppress the output messages
 set(DOXYGEN_QUIET YES)
+set(DOXYGEN_WARN_IF_UNDOCUMENTED NO)
+set(DOXYGEN_WARN_NO_PARAMDOC NO)
 ############################################################################
 
 doxygen_add_docs(

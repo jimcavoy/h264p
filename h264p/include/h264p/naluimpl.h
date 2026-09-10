@@ -7,7 +7,8 @@
 
 #include <loki/Visitor.h>
 
-/// @file Contains class definitions for NAL Unit Implementation types.
+/// @file naluimpl.h
+/// @brief Contains class definitions for NAL Unit Implementation types.
 
 namespace ThetaStream
 {
